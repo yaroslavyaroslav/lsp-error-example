@@ -1,0 +1,3000 @@
+.warnings {
+    border-width: 0;
+    background-color: color(var(--yellowish) alpha(0.25));
+    color: var(--foreground);
+    padding: 0.5rem;
+}
+.info {
+    border-width: 0;
+    background-color: color(var(--bluish) alpha(0.25));
+    color: var(--foreground);
+    padding: 0.5rem;
+}
+.hints {
+    border-width: 0;
+    background-color: color(var(--bluish) alpha(0.25));
+    color: var(--foreground);
+    padding: 0.5rem;
+}
+.actions {
+    font-family: system;
+    border-width: 0;
+    background-color: color(var(--foreground) alpha(0.1));
+    color: var(--foreground);
+    padding: 0.5rem;
+}
+.actions a.icon {
+    text-decoration: none;
+}
+.link.with-padding {
+    padding: 0.5rem;
+}
+pre.related_info {
+    border-top: 1px solid color(var(--background) alpha(0.25));
+    margin-top: 0.7rem;
+    padding-top: 0.7rem;
+}
+
+mdpopups: =====HTML OUTPUT=====
+mdpopups: 
+<div class="diagnostics"><pre class="hints">remove the whole `use` item <span style="color: color(var(--foreground) alpha(0.6));">rustc</span><span style="color: #ac7a68;">:</span><span style="color: color(var(--foreground) alpha(0.6));">unused_imports</span><pre class="related_info"><a href="location:rust-analyzer@file:///Volumes/devel/Rust/example/src/main.rs#1,4">src/main.rs:2</a>: original diagnostic</pre></pre></div><div class="highlight"><pre><span style="color: #333333;">use</span><br></pre></div>
+
+<hr />
+<p>Import or rename items from other crates or modules.</p>
+<p>Usually a <code class="highlight"><span style="color: #333333;">use</span></code> keyword is used to shorten the path required to refer to a module item.
+The keyword may appear in modules, blocks and even functions, usually at the top.</p>
+<p>The most basic usage of the keyword is <code class="highlight"><span style="color: #333333;">use path::to::item;</span></code>,
+though a number of convenient shortcuts are supported:</p>
+<ul>
+<li>Simultaneously binding a list of paths with a common prefix,
+  using the glob-like brace syntax <code class="highlight"><span style="color: #333333;">use a::b::{c, d, e::f, g::h::i};</span></code></li>
+<li>Simultaneously binding a list of paths with a common prefix and their common parent module,
+  using the <a href="https://doc.rust-lang.org/nightly/std/keyword.self.html"><code class="highlight"><span style="color: #333333;">self</span></code></a> keyword, such as <code class="highlight"><span style="color: #333333;">use a::b::{self, c, d::e};</span></code></li>
+<li>Rebinding the target name as a new local name, using the syntax <code class="highlight"><span style="color: #333333;">use p::q::r as x;</span></code>.
+  This can also be used with the last two features: <code class="highlight"><span style="color: #333333;">use a::b::{self as ab, c as abc}</span></code>.</li>
+<li>Binding all paths matching a given prefix,
+  using the asterisk wildcard syntax <code class="highlight"><span style="color: #333333;">use a::b::*;</span></code>.</li>
+<li>Nesting groups of the previous features multiple times,
+  such as <code class="highlight"><span style="color: #333333;">use a::b::{self as ab, c, d::{*, e::f}};</span></code></li>
+<li>Reexporting with visibility modifiers such as <code class="highlight"><span style="color: #333333;">pub use a::b;</span></code></li>
+<li>Importing with <code class="highlight"><span style="color: #333333;">_</span></code> to only import the methods of a trait without binding it to a name
+  (to avoid conflict for example): <code class="highlight"><span style="color: #333333;">use ::std::io::Read as _;</span></code>.</li>
+</ul>
+<p>Using path qualifiers like <a href="https://doc.rust-lang.org/nightly/std/keyword.crate.html"><code class="highlight"><span style="color: #333333;">crate</span></code></a>, <a href="https://doc.rust-lang.org/nightly/std/keyword.super.html"><code class="highlight"><span style="color: #333333;">super</span></code></a> or <a href="https://doc.rust-lang.org/nightly/std/keyword.self.html"><code class="highlight"><span style="color: #333333;">self</span></code></a> is supported: <code class="highlight"><span style="color: #333333;">use crate::a::b;</span></code>.</p>
+<p>Note that when the wildcard <code class="highlight"><span style="color: #333333;">*</span></code> is used on a type, it does not import its methods (though
+for <code class="highlight"><span style="color: #333333;">enum</span></code>s it imports the variants, as shown in the example below).</p>
+<div class="highlight"><pre><span style="color: #333333;">enum ExampleEnum {</span><br><span style="color: #333333;">&nbsp;&nbsp;&nbsp; VariantA,</span><br><span style="color: #333333;">&nbsp;&nbsp;&nbsp; VariantB,</span><br><span style="color: #333333;">}</span><br><span style="color: #333333;">&nbsp;</span><br><span style="color: #333333;">impl ExampleEnum {</span><br><span style="color: #333333;">&nbsp;&nbsp;&nbsp; fn new() -&gt; Self {</span><br><span style="color: #333333;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Self::VariantA</span><br><span style="color: #333333;">&nbsp;&nbsp;&nbsp; }</span><br><span style="color: #333333;">}</span><br><span style="color: #333333;">&nbsp;</span><br><span style="color: #333333;">use ExampleEnum::*;</span><br><span style="color: #333333;">&nbsp;</span><br><span style="color: #333333;">// Compiles.</span><br><span style="color: #333333;">let _ = VariantA;</span><br><span style="color: #333333;">&nbsp;</span><br><span style="color: #333333;">// Does not compile !</span><br><span style="color: #333333;">let n = new();</span><br></pre></div>
+
+<p>For more information on <code class="highlight"><span style="color: #333333;">use</span></code> and paths in general, see the <a href="https://doc.rust-lang.org/nightly/reference/items/use-declarations.html">Reference</a>.</p>
+<p>The differences about paths and the <code class="highlight"><span style="color: #333333;">use</span></code> keyword between the 2015 and 2018 editions
+can also be found in the <a href="https://doc.rust-lang.org/nightly/reference/items/use-declarations.html">Reference</a>.</p><div class="actions">Quick Fix: <a href='code-actions:rust-analyzer'>choose&nbsp;(2&nbsp;available)</a> <span class="color-muted">rust-analyzer</span></div><div class="actions"><a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;point&quot;:14},&quot;command&quot;:&quot;lsp_symbol_definition&quot;,&quot;view_id&quot;:583}'>Definition</a> <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;side_by_side&quot;:true,&quot;point&quot;:14},&quot;command&quot;:&quot;lsp_symbol_definition&quot;,&quot;view_id&quot;:583}' class='icon'>◨</a> | <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;point&quot;:14},&quot;command&quot;:&quot;lsp_symbol_type_definition&quot;,&quot;view_id&quot;:583}'>Type&nbsp;Definition</a> <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;side_by_side&quot;:true,&quot;point&quot;:14},&quot;command&quot;:&quot;lsp_symbol_type_definition&quot;,&quot;view_id&quot;:583}' class='icon'>◨</a> | <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;point&quot;:14},&quot;command&quot;:&quot;lsp_symbol_declaration&quot;,&quot;view_id&quot;:583}'>Declaration</a> <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;side_by_side&quot;:true,&quot;point&quot;:14},&quot;command&quot;:&quot;lsp_symbol_declaration&quot;,&quot;view_id&quot;:583}' class='icon'>◨</a> | <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;point&quot;:14},&quot;command&quot;:&quot;lsp_symbol_implementation&quot;,&quot;view_id&quot;:583}'>Implementation</a> <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;side_by_side&quot;:true,&quot;point&quot;:14},&quot;command&quot;:&quot;lsp_symbol_implementation&quot;,&quot;view_id&quot;:583}' class='icon'>◨</a> | <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;point&quot;:14},&quot;command&quot;:&quot;lsp_symbol_references&quot;,&quot;view_id&quot;:583}'>References</a> | <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;point&quot;:14},&quot;command&quot;:&quot;lsp_symbol_rename&quot;,&quot;view_id&quot;:583}'>Rename</a></div><div class="lsp_popup--spacer"></div>
+mdpopups: =====CSS=====
+mdpopups: 
+html {
+  --mdpopups-fg: var(--foreground);
+  --mdpopups-link: var(--bluish);
+  --mdpopups-font-mono: "sf mono", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  --mdpopups-admon-fg: var(--foreground);
+  --mdpopups-admon-info-fg: var(--foreground);
+  --mdpopups-admon-error-fg: var(--foreground);
+  --mdpopups-admon-warning-fg: var(--foreground);
+  --mdpopups-admon-success-fg: var(--foreground);
+  --mdpopups-admon-bg: var(--background);
+  --mdpopups-admon-info-bg: var(--background);
+  --mdpopups-admon-error-bg: var(--background);
+  --mdpopups-admon-warning-bg: var(--background);
+  --mdpopups-admon-success-bg: var(--background);
+  --mdpopups-admon-accent: color(var(--background) blend(var(--foreground) 50%));
+  --mdpopups-admon-title-fg:  var(--foreground);
+  --mdpopups-admon-info-title-fg:  var(--foreground);
+  --mdpopups-admon-error-title-fg:  var(--foreground);
+  --mdpopups-admon-warning-title-fg:  var(--foreground);
+  --mdpopups-admon-success-title-fg:  var(--foreground);
+  --mdpopups-admon-info-accent: color(var(--background) blend(var(--bluish) 50%));
+  --mdpopups-admon-error-accent: color(var(--background) blend(var(--redish) 50%));
+  --mdpopups-admon-warning-accent: color(var(--background) blend(var(--orangish) 50%));
+  --mdpopups-admon-success-accent: color(var(--background) blend(var(--greenish) 50%));
+  --mdpopups-kbd-fg: var(--background);
+  --mdpopups-kbd-bg: var(--foreground);
+}
+html.light {
+  --mdpopups-bg: color(var(--background) blend(black 95%));
+  --mdpopups-hr: color(var(--background) blend(black 85%));
+  --mdpopups-kbd-border: color(var(--foreground) blend(white 80%));
+  --mdpopups-hl-border: color(var(--background) blend(black 90%));
+  --mdpopups-hl-bg: color(var(--background) blend(black 98%));
+  background-color: var(--mdpopups-bg);
+}
+html.dark {
+  --mdpopups-bg: color(var(--background) blend(white 95%));
+  --mdpopups-hr: color(var(--background) blend(white 85%));
+  --mdpopups-kbd-border: color(var(--foreground) blend(black 80%));
+  --mdpopups-hl-border: color(var(--background) blend(white 90%));
+  --mdpopups-hl-bg: color(var(--background) blend(white 98%));
+  background-color: var(--mdpopups-bg);
+}
+
+html, body { padding: 0; margin: 0; }
+div.mdpopups {
+  display: block;
+  margin: 0;
+  padding: 0;
+  font-size: 1rem;
+  line-height: 1.1rem;
+  color: var(--mdpopups-fg);
+  background-color: var(--mdpopups-bg);
+}
+.mdpopups a {
+  color: var(--mdpopups-link);
+}
+.mdpopups .highlight,
+.mdpopups code,
+.mdpopups var,
+.mdpopups tt {
+  font-family: var(--mdpopups-font-mono);
+}
+.mdpopups div { display: block; }
+
+.mdpopups h1 { font-size: 1.5rem; }
+.mdpopups h2 { font-size: 1.4rem; }
+.mdpopups h3 { font-size: 1.3rem; }
+.mdpopups h4 { font-size: 1.2rem; }
+.mdpopups h5 { font-size: 1.1rem; }
+.mdpopups h6 { font-size: 1rem; }
+.mdpopups h1, .mdpopups h2, .mdpopups h3, .mdpopups h4, .mdpopups h5, .mdpopups h6 {
+  margin-top: 0.2rem;
+  margin-bottom: 0.2rem;
+}
+
+.mdpopups blockquote { display: block; font-style: italic; }
+
+.mdpopups hr {
+  display: block;
+  border-color: var(--mdpopups-hr);
+  border-style: solid;
+  border-width: 0 0 1px 0;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.mdpopups dl { display: block; }
+.mdpopups dt {
+  display: block;
+  font-style: italic;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+.mdpopups dd {
+  display: block;
+  margin-left: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.mdpopups pre { display: block; }
+
+.mdpopups blockquote, .mdpopups ol, .mdpopups ul, .mdpopups dl, .mdpopups p {
+  padding: 0;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  margin-left: 0;
+  margin-right: 0;
+}
+.mdpopups ul, .mdpopups ol { padding-left: 2rem; }
+
+.mdpopups kbd {
+  display: inline;
+  font-size: 0.9rem;
+  padding: 0.05rem 0.25rem;
+  border-radius: 0.25rem;
+  background-color: var(--mdpopups-kbd-bg);
+  color: var(--mdpopups-kbd-fg);
+  border: 1px solid var(--mdpopups-kbd-border);
+}
+
+.mdpopups .admonition {
+  display: block;
+  padding: 0 0.5rem 0.5rem 0.5rem;
+  border-radius: 0.25rem;
+  margin-bottom: 0.5rem;
+  background-color: var(--mdpopups-admon-bg);
+  color: var(--mdpopups-admon-fg);
+  border: 1px solid var(--mdpopups-admon-accent);
+}
+.mdpopups .admonition-title {
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin: 0 -0.5rem 0.5rem -0.5rem;
+  padding: 0.1rem 0.5rem 0.1rem 0.5rem;
+  border-top-left-radius: 0.25rem;
+  border-top-right-radius: 0.25rem;
+  color:  var(--mdpopups-admon-title-fg);
+  background-color: var(--mdpopups-admon-accent);
+}
+
+.mdpopups .admonition.panel-success .admonition-title {
+  color: var(--mdpopups-admon-success-title-fg);
+  background-color: var(--mdpopups-admon-success-accent);
+}
+.mdpopups .admonition.panel-success {
+  color:  var(--mdpopups-admon-success-fg);
+  background-color: var(--mdpopups-admon-success-bg);
+  border-color: var(--mdpopups-admon-success-accent);
+}
+.mdpopups .admonition.panel-warning .admonition-title {
+  color: var(--mdpopups-admon-warning-title-fg);
+  background-color: var(--mdpopups-admon-warning-accent);
+}
+.mdpopups .admonition.panel-warning {
+  color:  var(--mdpopups-admon-warning-fg);
+  background-color: var(--mdpopups-admon-warning-bg);
+  border-color: var(--mdpopups-admon-warning-accent);
+}
+.mdpopups .admonition.panel-error .admonition-title {
+  color: var(--mdpopups-admon-error-title-fg);
+  background-color: var(--mdpopups-admon-error-accent);
+}
+.mdpopups .admonition.panel-error {
+  color:  var(--mdpopups-admon-error-fg);
+  background-color: var(--mdpopups-admon-error-bg);
+  border-color: var(--mdpopups-admon-error-accent);
+}
+.mdpopups .admonition.panel-info .admonition-title {
+  color: var(--mdpopups-admon-info-title-fg);
+  background-color: var(--mdpopups-admon-info-accent);
+}
+.mdpopups .admonition.panel-info {
+  color:  var(--mdpopups-admon-info-fg);
+  background-color: var(--mdpopups-admon-info-bg);
+  border-color: var(--mdpopups-admon-info-accent);
+}
+.mdpopups .highlight {
+  border: 1px solid var(--mdpopups-hl-border);
+  border-radius: 0.25rem;
+  font-size: 0.9rem;
+  background-color: var(--mdpopups-hl-bg);
+}
+.mdpopups div.highlight,
+.mdpopups pre.highlight {
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+.mdpopups code.highlight {
+  padding: 0.05rem 0.25rem;
+}
+
+.lsp_popup {
+    margin: 0.5rem 0.5rem 0 0.5rem;
+    font-family: system;
+}
+.lsp_popup--spacer {
+    margin-top: 0.5rem;
+}
+.lsp_popup hr {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    border-color: color(var(--foreground) alpha(0.10));
+}
+.lsp_popup h1,
+.lsp_popup h2,
+.lsp_popup h3,
+.lsp_popup h4,
+.lsp_popup h5,
+.lsp_popup h6 {
+    font-size: 1rem;
+}
+.highlight {
+    border-width: 0;
+    border-radius: 0;
+}
+.color-muted {
+    color: color(var(--foreground) alpha(0.50));
+}
+.diagnostics {
+    margin-bottom: 0.5rem;
+    font-family: var(--mdpopups-font-mono);
+}
+.errors {
+    border-width: 0;
+    background-color: color(var(--redish) alpha(0.25));
+    color: var(--foreground);
+    padding: 0.5rem;
+}
+.warnings {
+    border-width: 0;
+    background-color: color(var(--yellowish) alpha(0.25));
+    color: var(--foreground);
+    padding: 0.5rem;
+}
+.info {
+    border-width: 0;
+    background-color: color(var(--bluish) alpha(0.25));
+    color: var(--foreground);
+    padding: 0.5rem;
+}
+.hints {
+    border-width: 0;
+    background-color: color(var(--bluish) alpha(0.25));
+    color: var(--foreground);
+    padding: 0.5rem;
+}
+.actions {
+    font-family: system;
+    border-width: 0;
+    background-color: color(var(--foreground) alpha(0.1));
+    color: var(--foreground);
+    padding: 0.5rem;
+}
+.actions a.icon {
+    text-decoration: none;
+}
+.link.with-padding {
+    padding: 0.5rem;
+}
+pre.related_info {
+    border-top: 1px solid color(var(--background) alpha(0.25));
+    margin-top: 0.7rem;
+    padding-top: 0.7rem;
+}
+
+mdpopups: =====HTML OUTPUT=====
+mdpopups: 
+<div class="diagnostics"><pre class="hints">remove the whole `use` item <span style="color: color(var(--foreground) alpha(0.6));">rustc</span><span style="color: #ac7a68;">:</span><span style="color: color(var(--foreground) alpha(0.6));">unused_imports</span><pre class="related_info"><a href="location:rust-analyzer@file:///Volumes/devel/Rust/example/src/main.rs#1,4">src/main.rs:2</a>: original diagnostic</pre></pre></div><div class="highlight"><pre><span style="color: #333333;">use</span><br></pre></div>
+
+<hr />
+<p>Import or rename items from other crates or modules.</p>
+<p>Usually a <code class="highlight"><span style="color: #333333;">use</span></code> keyword is used to shorten the path required to refer to a module item.
+The keyword may appear in modules, blocks and even functions, usually at the top.</p>
+<p>The most basic usage of the keyword is <code class="highlight"><span style="color: #333333;">use path::to::item;</span></code>,
+though a number of convenient shortcuts are supported:</p>
+<ul>
+<li>Simultaneously binding a list of paths with a common prefix,
+  using the glob-like brace syntax <code class="highlight"><span style="color: #333333;">use a::b::{c, d, e::f, g::h::i};</span></code></li>
+<li>Simultaneously binding a list of paths with a common prefix and their common parent module,
+  using the <a href="https://doc.rust-lang.org/nightly/std/keyword.self.html"><code class="highlight"><span style="color: #333333;">self</span></code></a> keyword, such as <code class="highlight"><span style="color: #333333;">use a::b::{self, c, d::e};</span></code></li>
+<li>Rebinding the target name as a new local name, using the syntax <code class="highlight"><span style="color: #333333;">use p::q::r as x;</span></code>.
+  This can also be used with the last two features: <code class="highlight"><span style="color: #333333;">use a::b::{self as ab, c as abc}</span></code>.</li>
+<li>Binding all paths matching a given prefix,
+  using the asterisk wildcard syntax <code class="highlight"><span style="color: #333333;">use a::b::*;</span></code>.</li>
+<li>Nesting groups of the previous features multiple times,
+  such as <code class="highlight"><span style="color: #333333;">use a::b::{self as ab, c, d::{*, e::f}};</span></code></li>
+<li>Reexporting with visibility modifiers such as <code class="highlight"><span style="color: #333333;">pub use a::b;</span></code></li>
+<li>Importing with <code class="highlight"><span style="color: #333333;">_</span></code> to only import the methods of a trait without binding it to a name
+  (to avoid conflict for example): <code class="highlight"><span style="color: #333333;">use ::std::io::Read as _;</span></code>.</li>
+</ul>
+<p>Using path qualifiers like <a href="https://doc.rust-lang.org/nightly/std/keyword.crate.html"><code class="highlight"><span style="color: #333333;">crate</span></code></a>, <a href="https://doc.rust-lang.org/nightly/std/keyword.super.html"><code class="highlight"><span style="color: #333333;">super</span></code></a> or <a href="https://doc.rust-lang.org/nightly/std/keyword.self.html"><code class="highlight"><span style="color: #333333;">self</span></code></a> is supported: <code class="highlight"><span style="color: #333333;">use crate::a::b;</span></code>.</p>
+<p>Note that when the wildcard <code class="highlight"><span style="color: #333333;">*</span></code> is used on a type, it does not import its methods (though
+for <code class="highlight"><span style="color: #333333;">enum</span></code>s it imports the variants, as shown in the example below).</p>
+<div class="highlight"><pre><span style="color: #333333;">enum ExampleEnum {</span><br><span style="color: #333333;">&nbsp;&nbsp;&nbsp; VariantA,</span><br><span style="color: #333333;">&nbsp;&nbsp;&nbsp; VariantB,</span><br><span style="color: #333333;">}</span><br><span style="color: #333333;">&nbsp;</span><br><span style="color: #333333;">impl ExampleEnum {</span><br><span style="color: #333333;">&nbsp;&nbsp;&nbsp; fn new() -&gt; Self {</span><br><span style="color: #333333;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Self::VariantA</span><br><span style="color: #333333;">&nbsp;&nbsp;&nbsp; }</span><br><span style="color: #333333;">}</span><br><span style="color: #333333;">&nbsp;</span><br><span style="color: #333333;">use ExampleEnum::*;</span><br><span style="color: #333333;">&nbsp;</span><br><span style="color: #333333;">// Compiles.</span><br><span style="color: #333333;">let _ = VariantA;</span><br><span style="color: #333333;">&nbsp;</span><br><span style="color: #333333;">// Does not compile !</span><br><span style="color: #333333;">let n = new();</span><br></pre></div>
+
+<p>For more information on <code class="highlight"><span style="color: #333333;">use</span></code> and paths in general, see the <a href="https://doc.rust-lang.org/nightly/reference/items/use-declarations.html">Reference</a>.</p>
+<p>The differences about paths and the <code class="highlight"><span style="color: #333333;">use</span></code> keyword between the 2015 and 2018 editions
+can also be found in the <a href="https://doc.rust-lang.org/nightly/reference/items/use-declarations.html">Reference</a>.</p><div class="actions">Quick Fix: <a href='code-actions:rust-analyzer'>choose&nbsp;(2&nbsp;available)</a> <span class="color-muted">rust-analyzer</span></div><div class="actions"><a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;point&quot;:14},&quot;command&quot;:&quot;lsp_symbol_definition&quot;,&quot;view_id&quot;:583}'>Definition</a> <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;side_by_side&quot;:true,&quot;point&quot;:14},&quot;command&quot;:&quot;lsp_symbol_definition&quot;,&quot;view_id&quot;:583}' class='icon'>◨</a> | <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;point&quot;:14},&quot;command&quot;:&quot;lsp_symbol_type_definition&quot;,&quot;view_id&quot;:583}'>Type&nbsp;Definition</a> <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;side_by_side&quot;:true,&quot;point&quot;:14},&quot;command&quot;:&quot;lsp_symbol_type_definition&quot;,&quot;view_id&quot;:583}' class='icon'>◨</a> | <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;point&quot;:14},&quot;command&quot;:&quot;lsp_symbol_declaration&quot;,&quot;view_id&quot;:583}'>Declaration</a> <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;side_by_side&quot;:true,&quot;point&quot;:14},&quot;command&quot;:&quot;lsp_symbol_declaration&quot;,&quot;view_id&quot;:583}' class='icon'>◨</a> | <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;point&quot;:14},&quot;command&quot;:&quot;lsp_symbol_implementation&quot;,&quot;view_id&quot;:583}'>Implementation</a> <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;side_by_side&quot;:true,&quot;point&quot;:14},&quot;command&quot;:&quot;lsp_symbol_implementation&quot;,&quot;view_id&quot;:583}' class='icon'>◨</a> | <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;point&quot;:14},&quot;command&quot;:&quot;lsp_symbol_references&quot;,&quot;view_id&quot;:583}'>References</a> | <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;point&quot;:14},&quot;command&quot;:&quot;lsp_symbol_rename&quot;,&quot;view_id&quot;:583}'>Rename</a></div><div class="lsp_popup--spacer"></div>
+mdpopups: =====CSS=====
+mdpopups: 
+html {
+  --mdpopups-fg: var(--foreground);
+  --mdpopups-link: var(--bluish);
+  --mdpopups-font-mono: "sf mono", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  --mdpopups-admon-fg: var(--foreground);
+  --mdpopups-admon-info-fg: var(--foreground);
+  --mdpopups-admon-error-fg: var(--foreground);
+  --mdpopups-admon-warning-fg: var(--foreground);
+  --mdpopups-admon-success-fg: var(--foreground);
+  --mdpopups-admon-bg: var(--background);
+  --mdpopups-admon-info-bg: var(--background);
+  --mdpopups-admon-error-bg: var(--background);
+  --mdpopups-admon-warning-bg: var(--background);
+  --mdpopups-admon-success-bg: var(--background);
+  --mdpopups-admon-accent: color(var(--background) blend(var(--foreground) 50%));
+  --mdpopups-admon-title-fg:  var(--foreground);
+  --mdpopups-admon-info-title-fg:  var(--foreground);
+  --mdpopups-admon-error-title-fg:  var(--foreground);
+  --mdpopups-admon-warning-title-fg:  var(--foreground);
+  --mdpopups-admon-success-title-fg:  var(--foreground);
+  --mdpopups-admon-info-accent: color(var(--background) blend(var(--bluish) 50%));
+  --mdpopups-admon-error-accent: color(var(--background) blend(var(--redish) 50%));
+  --mdpopups-admon-warning-accent: color(var(--background) blend(var(--orangish) 50%));
+  --mdpopups-admon-success-accent: color(var(--background) blend(var(--greenish) 50%));
+  --mdpopups-kbd-fg: var(--background);
+  --mdpopups-kbd-bg: var(--foreground);
+}
+html.light {
+  --mdpopups-bg: color(var(--background) blend(black 95%));
+  --mdpopups-hr: color(var(--background) blend(black 85%));
+  --mdpopups-kbd-border: color(var(--foreground) blend(white 80%));
+  --mdpopups-hl-border: color(var(--background) blend(black 90%));
+  --mdpopups-hl-bg: color(var(--background) blend(black 98%));
+  background-color: var(--mdpopups-bg);
+}
+html.dark {
+  --mdpopups-bg: color(var(--background) blend(white 95%));
+  --mdpopups-hr: color(var(--background) blend(white 85%));
+  --mdpopups-kbd-border: color(var(--foreground) blend(black 80%));
+  --mdpopups-hl-border: color(var(--background) blend(white 90%));
+  --mdpopups-hl-bg: color(var(--background) blend(white 98%));
+  background-color: var(--mdpopups-bg);
+}
+
+html, body { padding: 0; margin: 0; }
+div.mdpopups {
+  display: block;
+  margin: 0;
+  padding: 0;
+  font-size: 1rem;
+  line-height: 1.1rem;
+  color: var(--mdpopups-fg);
+  background-color: var(--mdpopups-bg);
+}
+.mdpopups a {
+  color: var(--mdpopups-link);
+}
+.mdpopups .highlight,
+.mdpopups code,
+.mdpopups var,
+.mdpopups tt {
+  font-family: var(--mdpopups-font-mono);
+}
+.mdpopups div { display: block; }
+
+.mdpopups h1 { font-size: 1.5rem; }
+.mdpopups h2 { font-size: 1.4rem; }
+.mdpopups h3 { font-size: 1.3rem; }
+.mdpopups h4 { font-size: 1.2rem; }
+.mdpopups h5 { font-size: 1.1rem; }
+.mdpopups h6 { font-size: 1rem; }
+.mdpopups h1, .mdpopups h2, .mdpopups h3, .mdpopups h4, .mdpopups h5, .mdpopups h6 {
+  margin-top: 0.2rem;
+  margin-bottom: 0.2rem;
+}
+
+.mdpopups blockquote { display: block; font-style: italic; }
+
+.mdpopups hr {
+  display: block;
+  border-color: var(--mdpopups-hr);
+  border-style: solid;
+  border-width: 0 0 1px 0;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.mdpopups dl { display: block; }
+.mdpopups dt {
+  display: block;
+  font-style: italic;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+.mdpopups dd {
+  display: block;
+  margin-left: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.mdpopups pre { display: block; }
+
+.mdpopups blockquote, .mdpopups ol, .mdpopups ul, .mdpopups dl, .mdpopups p {
+  padding: 0;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  margin-left: 0;
+  margin-right: 0;
+}
+.mdpopups ul, .mdpopups ol { padding-left: 2rem; }
+
+.mdpopups kbd {
+  display: inline;
+  font-size: 0.9rem;
+  padding: 0.05rem 0.25rem;
+  border-radius: 0.25rem;
+  background-color: var(--mdpopups-kbd-bg);
+  color: var(--mdpopups-kbd-fg);
+  border: 1px solid var(--mdpopups-kbd-border);
+}
+
+.mdpopups .admonition {
+  display: block;
+  padding: 0 0.5rem 0.5rem 0.5rem;
+  border-radius: 0.25rem;
+  margin-bottom: 0.5rem;
+  background-color: var(--mdpopups-admon-bg);
+  color: var(--mdpopups-admon-fg);
+  border: 1px solid var(--mdpopups-admon-accent);
+}
+.mdpopups .admonition-title {
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin: 0 -0.5rem 0.5rem -0.5rem;
+  padding: 0.1rem 0.5rem 0.1rem 0.5rem;
+  border-top-left-radius: 0.25rem;
+  border-top-right-radius: 0.25rem;
+  color:  var(--mdpopups-admon-title-fg);
+  background-color: var(--mdpopups-admon-accent);
+}
+
+.mdpopups .admonition.panel-success .admonition-title {
+  color: var(--mdpopups-admon-success-title-fg);
+  background-color: var(--mdpopups-admon-success-accent);
+}
+.mdpopups .admonition.panel-success {
+  color:  var(--mdpopups-admon-success-fg);
+  background-color: var(--mdpopups-admon-success-bg);
+  border-color: var(--mdpopups-admon-success-accent);
+}
+.mdpopups .admonition.panel-warning .admonition-title {
+  color: var(--mdpopups-admon-warning-title-fg);
+  background-color: var(--mdpopups-admon-warning-accent);
+}
+.mdpopups .admonition.panel-warning {
+  color:  var(--mdpopups-admon-warning-fg);
+  background-color: var(--mdpopups-admon-warning-bg);
+  border-color: var(--mdpopups-admon-warning-accent);
+}
+.mdpopups .admonition.panel-error .admonition-title {
+  color: var(--mdpopups-admon-error-title-fg);
+  background-color: var(--mdpopups-admon-error-accent);
+}
+.mdpopups .admonition.panel-error {
+  color:  var(--mdpopups-admon-error-fg);
+  background-color: var(--mdpopups-admon-error-bg);
+  border-color: var(--mdpopups-admon-error-accent);
+}
+.mdpopups .admonition.panel-info .admonition-title {
+  color: var(--mdpopups-admon-info-title-fg);
+  background-color: var(--mdpopups-admon-info-accent);
+}
+.mdpopups .admonition.panel-info {
+  color:  var(--mdpopups-admon-info-fg);
+  background-color: var(--mdpopups-admon-info-bg);
+  border-color: var(--mdpopups-admon-info-accent);
+}
+.mdpopups .highlight {
+  border: 1px solid var(--mdpopups-hl-border);
+  border-radius: 0.25rem;
+  font-size: 0.9rem;
+  background-color: var(--mdpopups-hl-bg);
+}
+.mdpopups div.highlight,
+.mdpopups pre.highlight {
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+.mdpopups code.highlight {
+  padding: 0.05rem 0.25rem;
+}
+
+.lsp_popup {
+    margin: 0.5rem 0.5rem 0 0.5rem;
+    font-family: system;
+}
+.lsp_popup--spacer {
+    margin-top: 0.5rem;
+}
+.lsp_popup hr {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    border-color: color(var(--foreground) alpha(0.10));
+}
+.lsp_popup h1,
+.lsp_popup h2,
+.lsp_popup h3,
+.lsp_popup h4,
+.lsp_popup h5,
+.lsp_popup h6 {
+    font-size: 1rem;
+}
+.highlight {
+    border-width: 0;
+    border-radius: 0;
+}
+.color-muted {
+    color: color(var(--foreground) alpha(0.50));
+}
+.diagnostics {
+    margin-bottom: 0.5rem;
+    font-family: var(--mdpopups-font-mono);
+}
+.errors {
+    border-width: 0;
+    background-color: color(var(--redish) alpha(0.25));
+    color: var(--foreground);
+    padding: 0.5rem;
+}
+.warnings {
+    border-width: 0;
+    background-color: color(var(--yellowish) alpha(0.25));
+    color: var(--foreground);
+    padding: 0.5rem;
+}
+.info {
+    border-width: 0;
+    background-color: color(var(--bluish) alpha(0.25));
+    color: var(--foreground);
+    padding: 0.5rem;
+}
+.hints {
+    border-width: 0;
+    background-color: color(var(--bluish) alpha(0.25));
+    color: var(--foreground);
+    padding: 0.5rem;
+}
+.actions {
+    font-family: system;
+    border-width: 0;
+    background-color: color(var(--foreground) alpha(0.1));
+    color: var(--foreground);
+    padding: 0.5rem;
+}
+.actions a.icon {
+    text-decoration: none;
+}
+.link.with-padding {
+    padding: 0.5rem;
+}
+pre.related_info {
+    border-top: 1px solid color(var(--background) alpha(0.25));
+    margin-top: 0.7rem;
+    padding-top: 0.7rem;
+}
+
+mdpopups: =====HTML OUTPUT=====
+mdpopups: 
+<div class="diagnostics"><pre class="hints">unexpected token <span style="color: color(var(--foreground) alpha(0.6));">rustc</span><pre class="related_info"><a href="location:rust-analyzer@file:///Volumes/devel/Rust/example/src/main.rs#1,17">src/main.rs:2</a>: original diagnostic</pre></pre><pre class="hints">remove the whole `use` item <span style="color: color(var(--foreground) alpha(0.6));">rustc</span><span style="color: #ac7a68;">:</span><span style="color: color(var(--foreground) alpha(0.6));">unused_imports</span><pre class="related_info"><a href="location:rust-analyzer@file:///Volumes/devel/Rust/example/src/main.rs#2,10">src/main.rs:3</a>: original diagnostic</pre></pre></div><div class="lsp_popup--spacer"></div>
+mdpopups: =====CSS=====
+mdpopups: 
+html {
+  --mdpopups-fg: var(--foreground);
+  --mdpopups-link: var(--bluish);
+  --mdpopups-font-mono: "sf mono", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  --mdpopups-admon-fg: var(--foreground);
+  --mdpopups-admon-info-fg: var(--foreground);
+  --mdpopups-admon-error-fg: var(--foreground);
+  --mdpopups-admon-warning-fg: var(--foreground);
+  --mdpopups-admon-success-fg: var(--foreground);
+  --mdpopups-admon-bg: var(--background);
+  --mdpopups-admon-info-bg: var(--background);
+  --mdpopups-admon-error-bg: var(--background);
+  --mdpopups-admon-warning-bg: var(--background);
+  --mdpopups-admon-success-bg: var(--background);
+  --mdpopups-admon-accent: color(var(--background) blend(var(--foreground) 50%));
+  --mdpopups-admon-title-fg:  var(--foreground);
+  --mdpopups-admon-info-title-fg:  var(--foreground);
+  --mdpopups-admon-error-title-fg:  var(--foreground);
+  --mdpopups-admon-warning-title-fg:  var(--foreground);
+  --mdpopups-admon-success-title-fg:  var(--foreground);
+  --mdpopups-admon-info-accent: color(var(--background) blend(var(--bluish) 50%));
+  --mdpopups-admon-error-accent: color(var(--background) blend(var(--redish) 50%));
+  --mdpopups-admon-warning-accent: color(var(--background) blend(var(--orangish) 50%));
+  --mdpopups-admon-success-accent: color(var(--background) blend(var(--greenish) 50%));
+  --mdpopups-kbd-fg: var(--background);
+  --mdpopups-kbd-bg: var(--foreground);
+}
+html.light {
+  --mdpopups-bg: color(var(--background) blend(black 95%));
+  --mdpopups-hr: color(var(--background) blend(black 85%));
+  --mdpopups-kbd-border: color(var(--foreground) blend(white 80%));
+  --mdpopups-hl-border: color(var(--background) blend(black 90%));
+  --mdpopups-hl-bg: color(var(--background) blend(black 98%));
+  background-color: var(--mdpopups-bg);
+}
+html.dark {
+  --mdpopups-bg: color(var(--background) blend(white 95%));
+  --mdpopups-hr: color(var(--background) blend(white 85%));
+  --mdpopups-kbd-border: color(var(--foreground) blend(black 80%));
+  --mdpopups-hl-border: color(var(--background) blend(white 90%));
+  --mdpopups-hl-bg: color(var(--background) blend(white 98%));
+  background-color: var(--mdpopups-bg);
+}
+
+html, body { padding: 0; margin: 0; }
+div.mdpopups {
+  display: block;
+  margin: 0;
+  padding: 0;
+  font-size: 1rem;
+  line-height: 1.1rem;
+  color: var(--mdpopups-fg);
+  background-color: var(--mdpopups-bg);
+}
+.mdpopups a {
+  color: var(--mdpopups-link);
+}
+.mdpopups .highlight,
+.mdpopups code,
+.mdpopups var,
+.mdpopups tt {
+  font-family: var(--mdpopups-font-mono);
+}
+.mdpopups div { display: block; }
+
+.mdpopups h1 { font-size: 1.5rem; }
+.mdpopups h2 { font-size: 1.4rem; }
+.mdpopups h3 { font-size: 1.3rem; }
+.mdpopups h4 { font-size: 1.2rem; }
+.mdpopups h5 { font-size: 1.1rem; }
+.mdpopups h6 { font-size: 1rem; }
+.mdpopups h1, .mdpopups h2, .mdpopups h3, .mdpopups h4, .mdpopups h5, .mdpopups h6 {
+  margin-top: 0.2rem;
+  margin-bottom: 0.2rem;
+}
+
+.mdpopups blockquote { display: block; font-style: italic; }
+
+.mdpopups hr {
+  display: block;
+  border-color: var(--mdpopups-hr);
+  border-style: solid;
+  border-width: 0 0 1px 0;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.mdpopups dl { display: block; }
+.mdpopups dt {
+  display: block;
+  font-style: italic;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+.mdpopups dd {
+  display: block;
+  margin-left: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.mdpopups pre { display: block; }
+
+.mdpopups blockquote, .mdpopups ol, .mdpopups ul, .mdpopups dl, .mdpopups p {
+  padding: 0;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  margin-left: 0;
+  margin-right: 0;
+}
+.mdpopups ul, .mdpopups ol { padding-left: 2rem; }
+
+.mdpopups kbd {
+  display: inline;
+  font-size: 0.9rem;
+  padding: 0.05rem 0.25rem;
+  border-radius: 0.25rem;
+  background-color: var(--mdpopups-kbd-bg);
+  color: var(--mdpopups-kbd-fg);
+  border: 1px solid var(--mdpopups-kbd-border);
+}
+
+.mdpopups .admonition {
+  display: block;
+  padding: 0 0.5rem 0.5rem 0.5rem;
+  border-radius: 0.25rem;
+  margin-bottom: 0.5rem;
+  background-color: var(--mdpopups-admon-bg);
+  color: var(--mdpopups-admon-fg);
+  border: 1px solid var(--mdpopups-admon-accent);
+}
+.mdpopups .admonition-title {
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin: 0 -0.5rem 0.5rem -0.5rem;
+  padding: 0.1rem 0.5rem 0.1rem 0.5rem;
+  border-top-left-radius: 0.25rem;
+  border-top-right-radius: 0.25rem;
+  color:  var(--mdpopups-admon-title-fg);
+  background-color: var(--mdpopups-admon-accent);
+}
+
+.mdpopups .admonition.panel-success .admonition-title {
+  color: var(--mdpopups-admon-success-title-fg);
+  background-color: var(--mdpopups-admon-success-accent);
+}
+.mdpopups .admonition.panel-success {
+  color:  var(--mdpopups-admon-success-fg);
+  background-color: var(--mdpopups-admon-success-bg);
+  border-color: var(--mdpopups-admon-success-accent);
+}
+.mdpopups .admonition.panel-warning .admonition-title {
+  color: var(--mdpopups-admon-warning-title-fg);
+  background-color: var(--mdpopups-admon-warning-accent);
+}
+.mdpopups .admonition.panel-warning {
+  color:  var(--mdpopups-admon-warning-fg);
+  background-color: var(--mdpopups-admon-warning-bg);
+  border-color: var(--mdpopups-admon-warning-accent);
+}
+.mdpopups .admonition.panel-error .admonition-title {
+  color: var(--mdpopups-admon-error-title-fg);
+  background-color: var(--mdpopups-admon-error-accent);
+}
+.mdpopups .admonition.panel-error {
+  color:  var(--mdpopups-admon-error-fg);
+  background-color: var(--mdpopups-admon-error-bg);
+  border-color: var(--mdpopups-admon-error-accent);
+}
+.mdpopups .admonition.panel-info .admonition-title {
+  color: var(--mdpopups-admon-info-title-fg);
+  background-color: var(--mdpopups-admon-info-accent);
+}
+.mdpopups .admonition.panel-info {
+  color:  var(--mdpopups-admon-info-fg);
+  background-color: var(--mdpopups-admon-info-bg);
+  border-color: var(--mdpopups-admon-info-accent);
+}
+.mdpopups .highlight {
+  border: 1px solid var(--mdpopups-hl-border);
+  border-radius: 0.25rem;
+  font-size: 0.9rem;
+  background-color: var(--mdpopups-hl-bg);
+}
+.mdpopups div.highlight,
+.mdpopups pre.highlight {
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+.mdpopups code.highlight {
+  padding: 0.05rem 0.25rem;
+}
+
+.lsp_popup {
+    margin: 0.5rem 0.5rem 0 0.5rem;
+    font-family: system;
+}
+.lsp_popup--spacer {
+    margin-top: 0.5rem;
+}
+.lsp_popup hr {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    border-color: color(var(--foreground) alpha(0.10));
+}
+.lsp_popup h1,
+.lsp_popup h2,
+.lsp_popup h3,
+.lsp_popup h4,
+.lsp_popup h5,
+.lsp_popup h6 {
+    font-size: 1rem;
+}
+.highlight {
+    border-width: 0;
+    border-radius: 0;
+}
+.color-muted {
+    color: color(var(--foreground) alpha(0.50));
+}
+.diagnostics {
+    margin-bottom: 0.5rem;
+    font-family: var(--mdpopups-font-mono);
+}
+.errors {
+    border-width: 0;
+    background-color: color(var(--redish) alpha(0.25));
+    color: var(--foreground);
+    padding: 0.5rem;
+}
+.warnings {
+    border-width: 0;
+    background-color: color(var(--yellowish) alpha(0.25));
+    color: var(--foreground);
+    padding: 0.5rem;
+}
+.info {
+    border-width: 0;
+    background-color: color(var(--bluish) alpha(0.25));
+    color: var(--foreground);
+    padding: 0.5rem;
+}
+.hints {
+    border-width: 0;
+    background-color: color(var(--bluish) alpha(0.25));
+    color: var(--foreground);
+    padding: 0.5rem;
+}
+.actions {
+    font-family: system;
+    border-width: 0;
+    background-color: color(var(--foreground) alpha(0.1));
+    color: var(--foreground);
+    padding: 0.5rem;
+}
+.actions a.icon {
+    text-decoration: none;
+}
+.link.with-padding {
+    padding: 0.5rem;
+}
+pre.related_info {
+    border-top: 1px solid color(var(--background) alpha(0.25));
+    margin-top: 0.7rem;
+    padding-top: 0.7rem;
+}
+
+mdpopups: =====HTML OUTPUT=====
+mdpopups: 
+<div class="diagnostics"><pre class="hints">unexpected token <span style="color: color(var(--foreground) alpha(0.6));">rustc</span><pre class="related_info"><a href="location:rust-analyzer@file:///Volumes/devel/Rust/example/src/main.rs#1,17">src/main.rs:2</a>: original diagnostic</pre></pre><pre class="hints">remove the whole `use` item <span style="color: color(var(--foreground) alpha(0.6));">rustc</span><span style="color: #ac7a68;">:</span><span style="color: color(var(--foreground) alpha(0.6));">unused_imports</span><pre class="related_info"><a href="location:rust-analyzer@file:///Volumes/devel/Rust/example/src/main.rs#2,10">src/main.rs:3</a>: original diagnostic</pre></pre></div><div class="highlight"><pre><span style="color: #333333;">use</span><br></pre></div>
+
+<hr />
+<p>Import or rename items from other crates or modules.</p>
+<p>Usually a <code class="highlight"><span style="color: #333333;">use</span></code> keyword is used to shorten the path required to refer to a module item.
+The keyword may appear in modules, blocks and even functions, usually at the top.</p>
+<p>The most basic usage of the keyword is <code class="highlight"><span style="color: #333333;">use path::to::item;</span></code>,
+though a number of convenient shortcuts are supported:</p>
+<ul>
+<li>Simultaneously binding a list of paths with a common prefix,
+  using the glob-like brace syntax <code class="highlight"><span style="color: #333333;">use a::b::{c, d, e::f, g::h::i};</span></code></li>
+<li>Simultaneously binding a list of paths with a common prefix and their common parent module,
+  using the <a href="https://doc.rust-lang.org/nightly/std/keyword.self.html"><code class="highlight"><span style="color: #333333;">self</span></code></a> keyword, such as <code class="highlight"><span style="color: #333333;">use a::b::{self, c, d::e};</span></code></li>
+<li>Rebinding the target name as a new local name, using the syntax <code class="highlight"><span style="color: #333333;">use p::q::r as x;</span></code>.
+  This can also be used with the last two features: <code class="highlight"><span style="color: #333333;">use a::b::{self as ab, c as abc}</span></code>.</li>
+<li>Binding all paths matching a given prefix,
+  using the asterisk wildcard syntax <code class="highlight"><span style="color: #333333;">use a::b::*;</span></code>.</li>
+<li>Nesting groups of the previous features multiple times,
+  such as <code class="highlight"><span style="color: #333333;">use a::b::{self as ab, c, d::{*, e::f}};</span></code></li>
+<li>Reexporting with visibility modifiers such as <code class="highlight"><span style="color: #333333;">pub use a::b;</span></code></li>
+<li>Importing with <code class="highlight"><span style="color: #333333;">_</span></code> to only import the methods of a trait without binding it to a name
+  (to avoid conflict for example): <code class="highlight"><span style="color: #333333;">use ::std::io::Read as _;</span></code>.</li>
+</ul>
+<p>Using path qualifiers like <a href="https://doc.rust-lang.org/nightly/std/keyword.crate.html"><code class="highlight"><span style="color: #333333;">crate</span></code></a>, <a href="https://doc.rust-lang.org/nightly/std/keyword.super.html"><code class="highlight"><span style="color: #333333;">super</span></code></a> or <a href="https://doc.rust-lang.org/nightly/std/keyword.self.html"><code class="highlight"><span style="color: #333333;">self</span></code></a> is supported: <code class="highlight"><span style="color: #333333;">use crate::a::b;</span></code>.</p>
+<p>Note that when the wildcard <code class="highlight"><span style="color: #333333;">*</span></code> is used on a type, it does not import its methods (though
+for <code class="highlight"><span style="color: #333333;">enum</span></code>s it imports the variants, as shown in the example below).</p>
+<div class="highlight"><pre><span style="color: #333333;">enum ExampleEnum {</span><br><span style="color: #333333;">&nbsp;&nbsp;&nbsp; VariantA,</span><br><span style="color: #333333;">&nbsp;&nbsp;&nbsp; VariantB,</span><br><span style="color: #333333;">}</span><br><span style="color: #333333;">&nbsp;</span><br><span style="color: #333333;">impl ExampleEnum {</span><br><span style="color: #333333;">&nbsp;&nbsp;&nbsp; fn new() -&gt; Self {</span><br><span style="color: #333333;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Self::VariantA</span><br><span style="color: #333333;">&nbsp;&nbsp;&nbsp; }</span><br><span style="color: #333333;">}</span><br><span style="color: #333333;">&nbsp;</span><br><span style="color: #333333;">use ExampleEnum::*;</span><br><span style="color: #333333;">&nbsp;</span><br><span style="color: #333333;">// Compiles.</span><br><span style="color: #333333;">let _ = VariantA;</span><br><span style="color: #333333;">&nbsp;</span><br><span style="color: #333333;">// Does not compile !</span><br><span style="color: #333333;">let n = new();</span><br></pre></div>
+
+<p>For more information on <code class="highlight"><span style="color: #333333;">use</span></code> and paths in general, see the <a href="https://doc.rust-lang.org/nightly/reference/items/use-declarations.html">Reference</a>.</p>
+<p>The differences about paths and the <code class="highlight"><span style="color: #333333;">use</span></code> keyword between the 2015 and 2018 editions
+can also be found in the <a href="https://doc.rust-lang.org/nightly/reference/items/use-declarations.html">Reference</a>.</p><div class="actions">Quick Fix: <a href='code-actions:rust-analyzer'>remove&nbsp;the&nbsp;whole&nbsp;`use`&nbsp;item</a> <span class="color-muted">rust-analyzer</span></div><div class="actions"><a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;point&quot;:31},&quot;command&quot;:&quot;lsp_symbol_definition&quot;,&quot;view_id&quot;:583}'>Definition</a> <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;side_by_side&quot;:true,&quot;point&quot;:31},&quot;command&quot;:&quot;lsp_symbol_definition&quot;,&quot;view_id&quot;:583}' class='icon'>◨</a> | <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;point&quot;:31},&quot;command&quot;:&quot;lsp_symbol_type_definition&quot;,&quot;view_id&quot;:583}'>Type&nbsp;Definition</a> <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;side_by_side&quot;:true,&quot;point&quot;:31},&quot;command&quot;:&quot;lsp_symbol_type_definition&quot;,&quot;view_id&quot;:583}' class='icon'>◨</a> | <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;point&quot;:31},&quot;command&quot;:&quot;lsp_symbol_declaration&quot;,&quot;view_id&quot;:583}'>Declaration</a> <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;side_by_side&quot;:true,&quot;point&quot;:31},&quot;command&quot;:&quot;lsp_symbol_declaration&quot;,&quot;view_id&quot;:583}' class='icon'>◨</a> | <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;point&quot;:31},&quot;command&quot;:&quot;lsp_symbol_implementation&quot;,&quot;view_id&quot;:583}'>Implementation</a> <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;side_by_side&quot;:true,&quot;point&quot;:31},&quot;command&quot;:&quot;lsp_symbol_implementation&quot;,&quot;view_id&quot;:583}' class='icon'>◨</a> | <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;point&quot;:31},&quot;command&quot;:&quot;lsp_symbol_references&quot;,&quot;view_id&quot;:583}'>References</a> | <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;point&quot;:31},&quot;command&quot;:&quot;lsp_symbol_rename&quot;,&quot;view_id&quot;:583}'>Rename</a></div><div class="lsp_popup--spacer"></div>
+mdpopups: =====CSS=====
+mdpopups: 
+html {
+  --mdpopups-fg: var(--foreground);
+  --mdpopups-link: var(--bluish);
+  --mdpopups-font-mono: "sf mono", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  --mdpopups-admon-fg: var(--foreground);
+  --mdpopups-admon-info-fg: var(--foreground);
+  --mdpopups-admon-error-fg: var(--foreground);
+  --mdpopups-admon-warning-fg: var(--foreground);
+  --mdpopups-admon-success-fg: var(--foreground);
+  --mdpopups-admon-bg: var(--background);
+  --mdpopups-admon-info-bg: var(--background);
+  --mdpopups-admon-error-bg: var(--background);
+  --mdpopups-admon-warning-bg: var(--background);
+  --mdpopups-admon-success-bg: var(--background);
+  --mdpopups-admon-accent: color(var(--background) blend(var(--foreground) 50%));
+  --mdpopups-admon-title-fg:  var(--foreground);
+  --mdpopups-admon-info-title-fg:  var(--foreground);
+  --mdpopups-admon-error-title-fg:  var(--foreground);
+  --mdpopups-admon-warning-title-fg:  var(--foreground);
+  --mdpopups-admon-success-title-fg:  var(--foreground);
+  --mdpopups-admon-info-accent: color(var(--background) blend(var(--bluish) 50%));
+  --mdpopups-admon-error-accent: color(var(--background) blend(var(--redish) 50%));
+  --mdpopups-admon-warning-accent: color(var(--background) blend(var(--orangish) 50%));
+  --mdpopups-admon-success-accent: color(var(--background) blend(var(--greenish) 50%));
+  --mdpopups-kbd-fg: var(--background);
+  --mdpopups-kbd-bg: var(--foreground);
+}
+html.light {
+  --mdpopups-bg: color(var(--background) blend(black 95%));
+  --mdpopups-hr: color(var(--background) blend(black 85%));
+  --mdpopups-kbd-border: color(var(--foreground) blend(white 80%));
+  --mdpopups-hl-border: color(var(--background) blend(black 90%));
+  --mdpopups-hl-bg: color(var(--background) blend(black 98%));
+  background-color: var(--mdpopups-bg);
+}
+html.dark {
+  --mdpopups-bg: color(var(--background) blend(white 95%));
+  --mdpopups-hr: color(var(--background) blend(white 85%));
+  --mdpopups-kbd-border: color(var(--foreground) blend(black 80%));
+  --mdpopups-hl-border: color(var(--background) blend(white 90%));
+  --mdpopups-hl-bg: color(var(--background) blend(white 98%));
+  background-color: var(--mdpopups-bg);
+}
+
+html, body { padding: 0; margin: 0; }
+div.mdpopups {
+  display: block;
+  margin: 0;
+  padding: 0;
+  font-size: 1rem;
+  line-height: 1.1rem;
+  color: var(--mdpopups-fg);
+  background-color: var(--mdpopups-bg);
+}
+.mdpopups a {
+  color: var(--mdpopups-link);
+}
+.mdpopups .highlight,
+.mdpopups code,
+.mdpopups var,
+.mdpopups tt {
+  font-family: var(--mdpopups-font-mono);
+}
+.mdpopups div { display: block; }
+
+.mdpopups h1 { font-size: 1.5rem; }
+.mdpopups h2 { font-size: 1.4rem; }
+.mdpopups h3 { font-size: 1.3rem; }
+.mdpopups h4 { font-size: 1.2rem; }
+.mdpopups h5 { font-size: 1.1rem; }
+.mdpopups h6 { font-size: 1rem; }
+.mdpopups h1, .mdpopups h2, .mdpopups h3, .mdpopups h4, .mdpopups h5, .mdpopups h6 {
+  margin-top: 0.2rem;
+  margin-bottom: 0.2rem;
+}
+
+.mdpopups blockquote { display: block; font-style: italic; }
+
+.mdpopups hr {
+  display: block;
+  border-color: var(--mdpopups-hr);
+  border-style: solid;
+  border-width: 0 0 1px 0;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.mdpopups dl { display: block; }
+.mdpopups dt {
+  display: block;
+  font-style: italic;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+.mdpopups dd {
+  display: block;
+  margin-left: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.mdpopups pre { display: block; }
+
+.mdpopups blockquote, .mdpopups ol, .mdpopups ul, .mdpopups dl, .mdpopups p {
+  padding: 0;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  margin-left: 0;
+  margin-right: 0;
+}
+.mdpopups ul, .mdpopups ol { padding-left: 2rem; }
+
+.mdpopups kbd {
+  display: inline;
+  font-size: 0.9rem;
+  padding: 0.05rem 0.25rem;
+  border-radius: 0.25rem;
+  background-color: var(--mdpopups-kbd-bg);
+  color: var(--mdpopups-kbd-fg);
+  border: 1px solid var(--mdpopups-kbd-border);
+}
+
+.mdpopups .admonition {
+  display: block;
+  padding: 0 0.5rem 0.5rem 0.5rem;
+  border-radius: 0.25rem;
+  margin-bottom: 0.5rem;
+  background-color: var(--mdpopups-admon-bg);
+  color: var(--mdpopups-admon-fg);
+  border: 1px solid var(--mdpopups-admon-accent);
+}
+.mdpopups .admonition-title {
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin: 0 -0.5rem 0.5rem -0.5rem;
+  padding: 0.1rem 0.5rem 0.1rem 0.5rem;
+  border-top-left-radius: 0.25rem;
+  border-top-right-radius: 0.25rem;
+  color:  var(--mdpopups-admon-title-fg);
+  background-color: var(--mdpopups-admon-accent);
+}
+
+.mdpopups .admonition.panel-success .admonition-title {
+  color: var(--mdpopups-admon-success-title-fg);
+  background-color: var(--mdpopups-admon-success-accent);
+}
+.mdpopups .admonition.panel-success {
+  color:  var(--mdpopups-admon-success-fg);
+  background-color: var(--mdpopups-admon-success-bg);
+  border-color: var(--mdpopups-admon-success-accent);
+}
+.mdpopups .admonition.panel-warning .admonition-title {
+  color: var(--mdpopups-admon-warning-title-fg);
+  background-color: var(--mdpopups-admon-warning-accent);
+}
+.mdpopups .admonition.panel-warning {
+  color:  var(--mdpopups-admon-warning-fg);
+  background-color: var(--mdpopups-admon-warning-bg);
+  border-color: var(--mdpopups-admon-warning-accent);
+}
+.mdpopups .admonition.panel-error .admonition-title {
+  color: var(--mdpopups-admon-error-title-fg);
+  background-color: var(--mdpopups-admon-error-accent);
+}
+.mdpopups .admonition.panel-error {
+  color:  var(--mdpopups-admon-error-fg);
+  background-color: var(--mdpopups-admon-error-bg);
+  border-color: var(--mdpopups-admon-error-accent);
+}
+.mdpopups .admonition.panel-info .admonition-title {
+  color: var(--mdpopups-admon-info-title-fg);
+  background-color: var(--mdpopups-admon-info-accent);
+}
+.mdpopups .admonition.panel-info {
+  color:  var(--mdpopups-admon-info-fg);
+  background-color: var(--mdpopups-admon-info-bg);
+  border-color: var(--mdpopups-admon-info-accent);
+}
+.mdpopups .highlight {
+  border: 1px solid var(--mdpopups-hl-border);
+  border-radius: 0.25rem;
+  font-size: 0.9rem;
+  background-color: var(--mdpopups-hl-bg);
+}
+.mdpopups div.highlight,
+.mdpopups pre.highlight {
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+.mdpopups code.highlight {
+  padding: 0.05rem 0.25rem;
+}
+
+.lsp_popup {
+    margin: 0.5rem 0.5rem 0 0.5rem;
+    font-family: system;
+}
+.lsp_popup--spacer {
+    margin-top: 0.5rem;
+}
+.lsp_popup hr {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    border-color: color(var(--foreground) alpha(0.10));
+}
+.lsp_popup h1,
+.lsp_popup h2,
+.lsp_popup h3,
+.lsp_popup h4,
+.lsp_popup h5,
+.lsp_popup h6 {
+    font-size: 1rem;
+}
+.highlight {
+    border-width: 0;
+    border-radius: 0;
+}
+.color-muted {
+    color: color(var(--foreground) alpha(0.50));
+}
+.diagnostics {
+    margin-bottom: 0.5rem;
+    font-family: var(--mdpopups-font-mono);
+}
+.errors {
+    border-width: 0;
+    background-color: color(var(--redish) alpha(0.25));
+    color: var(--foreground);
+    padding: 0.5rem;
+}
+.warnings {
+    border-width: 0;
+    background-color: color(var(--yellowish) alpha(0.25));
+    color: var(--foreground);
+    padding: 0.5rem;
+}
+.info {
+    border-width: 0;
+    background-color: color(var(--bluish) alpha(0.25));
+    color: var(--foreground);
+    padding: 0.5rem;
+}
+.hints {
+    border-width: 0;
+    background-color: color(var(--bluish) alpha(0.25));
+    color: var(--foreground);
+    padding: 0.5rem;
+}
+.actions {
+    font-family: system;
+    border-width: 0;
+    background-color: color(var(--foreground) alpha(0.1));
+    color: var(--foreground);
+    padding: 0.5rem;
+}
+.actions a.icon {
+    text-decoration: none;
+}
+.link.with-padding {
+    padding: 0.5rem;
+}
+pre.related_info {
+    border-top: 1px solid color(var(--background) alpha(0.25));
+    margin-top: 0.7rem;
+    padding-top: 0.7rem;
+}
+
+mdpopups: =====HTML OUTPUT=====
+mdpopups: 
+<div class="diagnostics"><pre class="hints">unexpected token <span style="color: color(var(--foreground) alpha(0.6));">rustc</span><pre class="related_info"><a href="location:rust-analyzer@file:///Volumes/devel/Rust/example/src/main.rs#1,17">src/main.rs:2</a>: original diagnostic</pre></pre><pre class="hints">remove the whole `use` item <span style="color: color(var(--foreground) alpha(0.6));">rustc</span><span style="color: #ac7a68;">:</span><span style="color: color(var(--foreground) alpha(0.6));">unused_imports</span><pre class="related_info"><a href="location:rust-analyzer@file:///Volumes/devel/Rust/example/src/main.rs#2,10">src/main.rs:3</a>: original diagnostic</pre></pre></div><div class="highlight"><pre><span style="color: #333333;">use</span><br></pre></div>
+
+<hr />
+<p>Import or rename items from other crates or modules.</p>
+<p>Usually a <code class="highlight"><span style="color: #333333;">use</span></code> keyword is used to shorten the path required to refer to a module item.
+The keyword may appear in modules, blocks and even functions, usually at the top.</p>
+<p>The most basic usage of the keyword is <code class="highlight"><span style="color: #333333;">use path::to::item;</span></code>,
+though a number of convenient shortcuts are supported:</p>
+<ul>
+<li>Simultaneously binding a list of paths with a common prefix,
+  using the glob-like brace syntax <code class="highlight"><span style="color: #333333;">use a::b::{c, d, e::f, g::h::i};</span></code></li>
+<li>Simultaneously binding a list of paths with a common prefix and their common parent module,
+  using the <a href="https://doc.rust-lang.org/nightly/std/keyword.self.html"><code class="highlight"><span style="color: #333333;">self</span></code></a> keyword, such as <code class="highlight"><span style="color: #333333;">use a::b::{self, c, d::e};</span></code></li>
+<li>Rebinding the target name as a new local name, using the syntax <code class="highlight"><span style="color: #333333;">use p::q::r as x;</span></code>.
+  This can also be used with the last two features: <code class="highlight"><span style="color: #333333;">use a::b::{self as ab, c as abc}</span></code>.</li>
+<li>Binding all paths matching a given prefix,
+  using the asterisk wildcard syntax <code class="highlight"><span style="color: #333333;">use a::b::*;</span></code>.</li>
+<li>Nesting groups of the previous features multiple times,
+  such as <code class="highlight"><span style="color: #333333;">use a::b::{self as ab, c, d::{*, e::f}};</span></code></li>
+<li>Reexporting with visibility modifiers such as <code class="highlight"><span style="color: #333333;">pub use a::b;</span></code></li>
+<li>Importing with <code class="highlight"><span style="color: #333333;">_</span></code> to only import the methods of a trait without binding it to a name
+  (to avoid conflict for example): <code class="highlight"><span style="color: #333333;">use ::std::io::Read as _;</span></code>.</li>
+</ul>
+<p>Using path qualifiers like <a href="https://doc.rust-lang.org/nightly/std/keyword.crate.html"><code class="highlight"><span style="color: #333333;">crate</span></code></a>, <a href="https://doc.rust-lang.org/nightly/std/keyword.super.html"><code class="highlight"><span style="color: #333333;">super</span></code></a> or <a href="https://doc.rust-lang.org/nightly/std/keyword.self.html"><code class="highlight"><span style="color: #333333;">self</span></code></a> is supported: <code class="highlight"><span style="color: #333333;">use crate::a::b;</span></code>.</p>
+<p>Note that when the wildcard <code class="highlight"><span style="color: #333333;">*</span></code> is used on a type, it does not import its methods (though
+for <code class="highlight"><span style="color: #333333;">enum</span></code>s it imports the variants, as shown in the example below).</p>
+<div class="highlight"><pre><span style="color: #333333;">enum ExampleEnum {</span><br><span style="color: #333333;">&nbsp;&nbsp;&nbsp; VariantA,</span><br><span style="color: #333333;">&nbsp;&nbsp;&nbsp; VariantB,</span><br><span style="color: #333333;">}</span><br><span style="color: #333333;">&nbsp;</span><br><span style="color: #333333;">impl ExampleEnum {</span><br><span style="color: #333333;">&nbsp;&nbsp;&nbsp; fn new() -&gt; Self {</span><br><span style="color: #333333;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Self::VariantA</span><br><span style="color: #333333;">&nbsp;&nbsp;&nbsp; }</span><br><span style="color: #333333;">}</span><br><span style="color: #333333;">&nbsp;</span><br><span style="color: #333333;">use ExampleEnum::*;</span><br><span style="color: #333333;">&nbsp;</span><br><span style="color: #333333;">// Compiles.</span><br><span style="color: #333333;">let _ = VariantA;</span><br><span style="color: #333333;">&nbsp;</span><br><span style="color: #333333;">// Does not compile !</span><br><span style="color: #333333;">let n = new();</span><br></pre></div>
+
+<p>For more information on <code class="highlight"><span style="color: #333333;">use</span></code> and paths in general, see the <a href="https://doc.rust-lang.org/nightly/reference/items/use-declarations.html">Reference</a>.</p>
+<p>The differences about paths and the <code class="highlight"><span style="color: #333333;">use</span></code> keyword between the 2015 and 2018 editions
+can also be found in the <a href="https://doc.rust-lang.org/nightly/reference/items/use-declarations.html">Reference</a>.</p><div class="actions">Quick Fix: <a href='code-actions:rust-analyzer'>remove&nbsp;the&nbsp;whole&nbsp;`use`&nbsp;item</a> <span class="color-muted">rust-analyzer</span></div><div class="actions"><a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;point&quot;:31},&quot;command&quot;:&quot;lsp_symbol_definition&quot;,&quot;view_id&quot;:583}'>Definition</a> <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;side_by_side&quot;:true,&quot;point&quot;:31},&quot;command&quot;:&quot;lsp_symbol_definition&quot;,&quot;view_id&quot;:583}' class='icon'>◨</a> | <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;point&quot;:31},&quot;command&quot;:&quot;lsp_symbol_type_definition&quot;,&quot;view_id&quot;:583}'>Type&nbsp;Definition</a> <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;side_by_side&quot;:true,&quot;point&quot;:31},&quot;command&quot;:&quot;lsp_symbol_type_definition&quot;,&quot;view_id&quot;:583}' class='icon'>◨</a> | <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;point&quot;:31},&quot;command&quot;:&quot;lsp_symbol_declaration&quot;,&quot;view_id&quot;:583}'>Declaration</a> <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;side_by_side&quot;:true,&quot;point&quot;:31},&quot;command&quot;:&quot;lsp_symbol_declaration&quot;,&quot;view_id&quot;:583}' class='icon'>◨</a> | <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;point&quot;:31},&quot;command&quot;:&quot;lsp_symbol_implementation&quot;,&quot;view_id&quot;:583}'>Implementation</a> <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;side_by_side&quot;:true,&quot;point&quot;:31},&quot;command&quot;:&quot;lsp_symbol_implementation&quot;,&quot;view_id&quot;:583}' class='icon'>◨</a> | <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;point&quot;:31},&quot;command&quot;:&quot;lsp_symbol_references&quot;,&quot;view_id&quot;:583}'>References</a> | <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;point&quot;:31},&quot;command&quot;:&quot;lsp_symbol_rename&quot;,&quot;view_id&quot;:583}'>Rename</a></div><div class="lsp_popup--spacer"></div>
+mdpopups: =====CSS=====
+mdpopups: 
+html {
+  --mdpopups-fg: var(--foreground);
+  --mdpopups-link: var(--bluish);
+  --mdpopups-font-mono: "sf mono", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  --mdpopups-admon-fg: var(--foreground);
+  --mdpopups-admon-info-fg: var(--foreground);
+  --mdpopups-admon-error-fg: var(--foreground);
+  --mdpopups-admon-warning-fg: var(--foreground);
+  --mdpopups-admon-success-fg: var(--foreground);
+  --mdpopups-admon-bg: var(--background);
+  --mdpopups-admon-info-bg: var(--background);
+  --mdpopups-admon-error-bg: var(--background);
+  --mdpopups-admon-warning-bg: var(--background);
+  --mdpopups-admon-success-bg: var(--background);
+  --mdpopups-admon-accent: color(var(--background) blend(var(--foreground) 50%));
+  --mdpopups-admon-title-fg:  var(--foreground);
+  --mdpopups-admon-info-title-fg:  var(--foreground);
+  --mdpopups-admon-error-title-fg:  var(--foreground);
+  --mdpopups-admon-warning-title-fg:  var(--foreground);
+  --mdpopups-admon-success-title-fg:  var(--foreground);
+  --mdpopups-admon-info-accent: color(var(--background) blend(var(--bluish) 50%));
+  --mdpopups-admon-error-accent: color(var(--background) blend(var(--redish) 50%));
+  --mdpopups-admon-warning-accent: color(var(--background) blend(var(--orangish) 50%));
+  --mdpopups-admon-success-accent: color(var(--background) blend(var(--greenish) 50%));
+  --mdpopups-kbd-fg: var(--background);
+  --mdpopups-kbd-bg: var(--foreground);
+}
+html.light {
+  --mdpopups-bg: color(var(--background) blend(black 95%));
+  --mdpopups-hr: color(var(--background) blend(black 85%));
+  --mdpopups-kbd-border: color(var(--foreground) blend(white 80%));
+  --mdpopups-hl-border: color(var(--background) blend(black 90%));
+  --mdpopups-hl-bg: color(var(--background) blend(black 98%));
+  background-color: var(--mdpopups-bg);
+}
+html.dark {
+  --mdpopups-bg: color(var(--background) blend(white 95%));
+  --mdpopups-hr: color(var(--background) blend(white 85%));
+  --mdpopups-kbd-border: color(var(--foreground) blend(black 80%));
+  --mdpopups-hl-border: color(var(--background) blend(white 90%));
+  --mdpopups-hl-bg: color(var(--background) blend(white 98%));
+  background-color: var(--mdpopups-bg);
+}
+
+html, body { padding: 0; margin: 0; }
+div.mdpopups {
+  display: block;
+  margin: 0;
+  padding: 0;
+  font-size: 1rem;
+  line-height: 1.1rem;
+  color: var(--mdpopups-fg);
+  background-color: var(--mdpopups-bg);
+}
+.mdpopups a {
+  color: var(--mdpopups-link);
+}
+.mdpopups .highlight,
+.mdpopups code,
+.mdpopups var,
+.mdpopups tt {
+  font-family: var(--mdpopups-font-mono);
+}
+.mdpopups div { display: block; }
+
+.mdpopups h1 { font-size: 1.5rem; }
+.mdpopups h2 { font-size: 1.4rem; }
+.mdpopups h3 { font-size: 1.3rem; }
+.mdpopups h4 { font-size: 1.2rem; }
+.mdpopups h5 { font-size: 1.1rem; }
+.mdpopups h6 { font-size: 1rem; }
+.mdpopups h1, .mdpopups h2, .mdpopups h3, .mdpopups h4, .mdpopups h5, .mdpopups h6 {
+  margin-top: 0.2rem;
+  margin-bottom: 0.2rem;
+}
+
+.mdpopups blockquote { display: block; font-style: italic; }
+
+.mdpopups hr {
+  display: block;
+  border-color: var(--mdpopups-hr);
+  border-style: solid;
+  border-width: 0 0 1px 0;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.mdpopups dl { display: block; }
+.mdpopups dt {
+  display: block;
+  font-style: italic;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+.mdpopups dd {
+  display: block;
+  margin-left: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.mdpopups pre { display: block; }
+
+.mdpopups blockquote, .mdpopups ol, .mdpopups ul, .mdpopups dl, .mdpopups p {
+  padding: 0;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  margin-left: 0;
+  margin-right: 0;
+}
+.mdpopups ul, .mdpopups ol { padding-left: 2rem; }
+
+.mdpopups kbd {
+  display: inline;
+  font-size: 0.9rem;
+  padding: 0.05rem 0.25rem;
+  border-radius: 0.25rem;
+  background-color: var(--mdpopups-kbd-bg);
+  color: var(--mdpopups-kbd-fg);
+  border: 1px solid var(--mdpopups-kbd-border);
+}
+
+.mdpopups .admonition {
+  display: block;
+  padding: 0 0.5rem 0.5rem 0.5rem;
+  border-radius: 0.25rem;
+  margin-bottom: 0.5rem;
+  background-color: var(--mdpopups-admon-bg);
+  color: var(--mdpopups-admon-fg);
+  border: 1px solid var(--mdpopups-admon-accent);
+}
+.mdpopups .admonition-title {
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin: 0 -0.5rem 0.5rem -0.5rem;
+  padding: 0.1rem 0.5rem 0.1rem 0.5rem;
+  border-top-left-radius: 0.25rem;
+  border-top-right-radius: 0.25rem;
+  color:  var(--mdpopups-admon-title-fg);
+  background-color: var(--mdpopups-admon-accent);
+}
+
+.mdpopups .admonition.panel-success .admonition-title {
+  color: var(--mdpopups-admon-success-title-fg);
+  background-color: var(--mdpopups-admon-success-accent);
+}
+.mdpopups .admonition.panel-success {
+  color:  var(--mdpopups-admon-success-fg);
+  background-color: var(--mdpopups-admon-success-bg);
+  border-color: var(--mdpopups-admon-success-accent);
+}
+.mdpopups .admonition.panel-warning .admonition-title {
+  color: var(--mdpopups-admon-warning-title-fg);
+  background-color: var(--mdpopups-admon-warning-accent);
+}
+.mdpopups .admonition.panel-warning {
+  color:  var(--mdpopups-admon-warning-fg);
+  background-color: var(--mdpopups-admon-warning-bg);
+  border-color: var(--mdpopups-admon-warning-accent);
+}
+.mdpopups .admonition.panel-error .admonition-title {
+  color: var(--mdpopups-admon-error-title-fg);
+  background-color: var(--mdpopups-admon-error-accent);
+}
+.mdpopups .admonition.panel-error {
+  color:  var(--mdpopups-admon-error-fg);
+  background-color: var(--mdpopups-admon-error-bg);
+  border-color: var(--mdpopups-admon-error-accent);
+}
+.mdpopups .admonition.panel-info .admonition-title {
+  color: var(--mdpopups-admon-info-title-fg);
+  background-color: var(--mdpopups-admon-info-accent);
+}
+.mdpopups .admonition.panel-info {
+  color:  var(--mdpopups-admon-info-fg);
+  background-color: var(--mdpopups-admon-info-bg);
+  border-color: var(--mdpopups-admon-info-accent);
+}
+.mdpopups .highlight {
+  border: 1px solid var(--mdpopups-hl-border);
+  border-radius: 0.25rem;
+  font-size: 0.9rem;
+  background-color: var(--mdpopups-hl-bg);
+}
+.mdpopups div.highlight,
+.mdpopups pre.highlight {
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+.mdpopups code.highlight {
+  padding: 0.05rem 0.25rem;
+}
+
+.lsp_popup {
+    margin: 0.5rem 0.5rem 0 0.5rem;
+    font-family: system;
+}
+.lsp_popup--spacer {
+    margin-top: 0.5rem;
+}
+.lsp_popup hr {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    border-color: color(var(--foreground) alpha(0.10));
+}
+.lsp_popup h1,
+.lsp_popup h2,
+.lsp_popup h3,
+.lsp_popup h4,
+.lsp_popup h5,
+.lsp_popup h6 {
+    font-size: 1rem;
+}
+.highlight {
+    border-width: 0;
+    border-radius: 0;
+}
+.color-muted {
+    color: color(var(--foreground) alpha(0.50));
+}
+.diagnostics {
+    margin-bottom: 0.5rem;
+    font-family: var(--mdpopups-font-mono);
+}
+.errors {
+    border-width: 0;
+    background-color: color(var(--redish) alpha(0.25));
+    color: var(--foreground);
+    padding: 0.5rem;
+}
+.warnings {
+    border-width: 0;
+    background-color: color(var(--yellowish) alpha(0.25));
+    color: var(--foreground);
+    padding: 0.5rem;
+}
+.info {
+    border-width: 0;
+    background-color: color(var(--bluish) alpha(0.25));
+    color: var(--foreground);
+    padding: 0.5rem;
+}
+.hints {
+    border-width: 0;
+    background-color: color(var(--bluish) alpha(0.25));
+    color: var(--foreground);
+    padding: 0.5rem;
+}
+.actions {
+    font-family: system;
+    border-width: 0;
+    background-color: color(var(--foreground) alpha(0.1));
+    color: var(--foreground);
+    padding: 0.5rem;
+}
+.actions a.icon {
+    text-decoration: none;
+}
+.link.with-padding {
+    padding: 0.5rem;
+}
+pre.related_info {
+    border-top: 1px solid color(var(--background) alpha(0.25));
+    margin-top: 0.7rem;
+    padding-top: 0.7rem;
+}
+
+mdpopups: =====HTML OUTPUT=====
+mdpopups: 
+<div class="diagnostics"><pre class="hints">unexpected token <span style="color: color(var(--foreground) alpha(0.6));">rustc</span><pre class="related_info"><a href="location:rust-analyzer@file:///Volumes/devel/Rust/example/src/main.rs#1,17">src/main.rs:2</a>: original diagnostic</pre></pre><pre class="hints">remove the whole `use` item <span style="color: color(var(--foreground) alpha(0.6));">rustc</span><span style="color: #ac7a68;">:</span><span style="color: color(var(--foreground) alpha(0.6));">unused_imports</span><pre class="related_info"><a href="location:rust-analyzer@file:///Volumes/devel/Rust/example/src/main.rs#2,10">src/main.rs:3</a>: original diagnostic</pre></pre></div><div class="lsp_popup--spacer"></div>
+mdpopups: =====CSS=====
+mdpopups: 
+html {
+  --mdpopups-fg: var(--foreground);
+  --mdpopups-link: var(--bluish);
+  --mdpopups-font-mono: "sf mono", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  --mdpopups-admon-fg: var(--foreground);
+  --mdpopups-admon-info-fg: var(--foreground);
+  --mdpopups-admon-error-fg: var(--foreground);
+  --mdpopups-admon-warning-fg: var(--foreground);
+  --mdpopups-admon-success-fg: var(--foreground);
+  --mdpopups-admon-bg: var(--background);
+  --mdpopups-admon-info-bg: var(--background);
+  --mdpopups-admon-error-bg: var(--background);
+  --mdpopups-admon-warning-bg: var(--background);
+  --mdpopups-admon-success-bg: var(--background);
+  --mdpopups-admon-accent: color(var(--background) blend(var(--foreground) 50%));
+  --mdpopups-admon-title-fg:  var(--foreground);
+  --mdpopups-admon-info-title-fg:  var(--foreground);
+  --mdpopups-admon-error-title-fg:  var(--foreground);
+  --mdpopups-admon-warning-title-fg:  var(--foreground);
+  --mdpopups-admon-success-title-fg:  var(--foreground);
+  --mdpopups-admon-info-accent: color(var(--background) blend(var(--bluish) 50%));
+  --mdpopups-admon-error-accent: color(var(--background) blend(var(--redish) 50%));
+  --mdpopups-admon-warning-accent: color(var(--background) blend(var(--orangish) 50%));
+  --mdpopups-admon-success-accent: color(var(--background) blend(var(--greenish) 50%));
+  --mdpopups-kbd-fg: var(--background);
+  --mdpopups-kbd-bg: var(--foreground);
+}
+html.light {
+  --mdpopups-bg: color(var(--background) blend(black 95%));
+  --mdpopups-hr: color(var(--background) blend(black 85%));
+  --mdpopups-kbd-border: color(var(--foreground) blend(white 80%));
+  --mdpopups-hl-border: color(var(--background) blend(black 90%));
+  --mdpopups-hl-bg: color(var(--background) blend(black 98%));
+  background-color: var(--mdpopups-bg);
+}
+html.dark {
+  --mdpopups-bg: color(var(--background) blend(white 95%));
+  --mdpopups-hr: color(var(--background) blend(white 85%));
+  --mdpopups-kbd-border: color(var(--foreground) blend(black 80%));
+  --mdpopups-hl-border: color(var(--background) blend(white 90%));
+  --mdpopups-hl-bg: color(var(--background) blend(white 98%));
+  background-color: var(--mdpopups-bg);
+}
+
+html, body { padding: 0; margin: 0; }
+div.mdpopups {
+  display: block;
+  margin: 0;
+  padding: 0;
+  font-size: 1rem;
+  line-height: 1.1rem;
+  color: var(--mdpopups-fg);
+  background-color: var(--mdpopups-bg);
+}
+.mdpopups a {
+  color: var(--mdpopups-link);
+}
+.mdpopups .highlight,
+.mdpopups code,
+.mdpopups var,
+.mdpopups tt {
+  font-family: var(--mdpopups-font-mono);
+}
+.mdpopups div { display: block; }
+
+.mdpopups h1 { font-size: 1.5rem; }
+.mdpopups h2 { font-size: 1.4rem; }
+.mdpopups h3 { font-size: 1.3rem; }
+.mdpopups h4 { font-size: 1.2rem; }
+.mdpopups h5 { font-size: 1.1rem; }
+.mdpopups h6 { font-size: 1rem; }
+.mdpopups h1, .mdpopups h2, .mdpopups h3, .mdpopups h4, .mdpopups h5, .mdpopups h6 {
+  margin-top: 0.2rem;
+  margin-bottom: 0.2rem;
+}
+
+.mdpopups blockquote { display: block; font-style: italic; }
+
+.mdpopups hr {
+  display: block;
+  border-color: var(--mdpopups-hr);
+  border-style: solid;
+  border-width: 0 0 1px 0;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.mdpopups dl { display: block; }
+.mdpopups dt {
+  display: block;
+  font-style: italic;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+.mdpopups dd {
+  display: block;
+  margin-left: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.mdpopups pre { display: block; }
+
+.mdpopups blockquote, .mdpopups ol, .mdpopups ul, .mdpopups dl, .mdpopups p {
+  padding: 0;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  margin-left: 0;
+  margin-right: 0;
+}
+.mdpopups ul, .mdpopups ol { padding-left: 2rem; }
+
+.mdpopups kbd {
+  display: inline;
+  font-size: 0.9rem;
+  padding: 0.05rem 0.25rem;
+  border-radius: 0.25rem;
+  background-color: var(--mdpopups-kbd-bg);
+  color: var(--mdpopups-kbd-fg);
+  border: 1px solid var(--mdpopups-kbd-border);
+}
+
+.mdpopups .admonition {
+  display: block;
+  padding: 0 0.5rem 0.5rem 0.5rem;
+  border-radius: 0.25rem;
+  margin-bottom: 0.5rem;
+  background-color: var(--mdpopups-admon-bg);
+  color: var(--mdpopups-admon-fg);
+  border: 1px solid var(--mdpopups-admon-accent);
+}
+.mdpopups .admonition-title {
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin: 0 -0.5rem 0.5rem -0.5rem;
+  padding: 0.1rem 0.5rem 0.1rem 0.5rem;
+  border-top-left-radius: 0.25rem;
+  border-top-right-radius: 0.25rem;
+  color:  var(--mdpopups-admon-title-fg);
+  background-color: var(--mdpopups-admon-accent);
+}
+
+.mdpopups .admonition.panel-success .admonition-title {
+  color: var(--mdpopups-admon-success-title-fg);
+  background-color: var(--mdpopups-admon-success-accent);
+}
+.mdpopups .admonition.panel-success {
+  color:  var(--mdpopups-admon-success-fg);
+  background-color: var(--mdpopups-admon-success-bg);
+  border-color: var(--mdpopups-admon-success-accent);
+}
+.mdpopups .admonition.panel-warning .admonition-title {
+  color: var(--mdpopups-admon-warning-title-fg);
+  background-color: var(--mdpopups-admon-warning-accent);
+}
+.mdpopups .admonition.panel-warning {
+  color:  var(--mdpopups-admon-warning-fg);
+  background-color: var(--mdpopups-admon-warning-bg);
+  border-color: var(--mdpopups-admon-warning-accent);
+}
+.mdpopups .admonition.panel-error .admonition-title {
+  color: var(--mdpopups-admon-error-title-fg);
+  background-color: var(--mdpopups-admon-error-accent);
+}
+.mdpopups .admonition.panel-error {
+  color:  var(--mdpopups-admon-error-fg);
+  background-color: var(--mdpopups-admon-error-bg);
+  border-color: var(--mdpopups-admon-error-accent);
+}
+.mdpopups .admonition.panel-info .admonition-title {
+  color: var(--mdpopups-admon-info-title-fg);
+  background-color: var(--mdpopups-admon-info-accent);
+}
+.mdpopups .admonition.panel-info {
+  color:  var(--mdpopups-admon-info-fg);
+  background-color: var(--mdpopups-admon-info-bg);
+  border-color: var(--mdpopups-admon-info-accent);
+}
+.mdpopups .highlight {
+  border: 1px solid var(--mdpopups-hl-border);
+  border-radius: 0.25rem;
+  font-size: 0.9rem;
+  background-color: var(--mdpopups-hl-bg);
+}
+.mdpopups div.highlight,
+.mdpopups pre.highlight {
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+.mdpopups code.highlight {
+  padding: 0.05rem 0.25rem;
+}
+
+.lsp_popup {
+    margin: 0.5rem 0.5rem 0 0.5rem;
+    font-family: system;
+}
+.lsp_popup--spacer {
+    margin-top: 0.5rem;
+}
+.lsp_popup hr {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    border-color: color(var(--foreground) alpha(0.10));
+}
+.lsp_popup h1,
+.lsp_popup h2,
+.lsp_popup h3,
+.lsp_popup h4,
+.lsp_popup h5,
+.lsp_popup h6 {
+    font-size: 1rem;
+}
+.highlight {
+    border-width: 0;
+    border-radius: 0;
+}
+.color-muted {
+    color: color(var(--foreground) alpha(0.50));
+}
+.diagnostics {
+    margin-bottom: 0.5rem;
+    font-family: var(--mdpopups-font-mono);
+}
+.errors {
+    border-width: 0;
+    background-color: color(var(--redish) alpha(0.25));
+    color: var(--foreground);
+    padding: 0.5rem;
+}
+.warnings {
+    border-width: 0;
+    background-color: color(var(--yellowish) alpha(0.25));
+    color: var(--foreground);
+    padding: 0.5rem;
+}
+.info {
+    border-width: 0;
+    background-color: color(var(--bluish) alpha(0.25));
+    color: var(--foreground);
+    padding: 0.5rem;
+}
+.hints {
+    border-width: 0;
+    background-color: color(var(--bluish) alpha(0.25));
+    color: var(--foreground);
+    padding: 0.5rem;
+}
+.actions {
+    font-family: system;
+    border-width: 0;
+    background-color: color(var(--foreground) alpha(0.1));
+    color: var(--foreground);
+    padding: 0.5rem;
+}
+.actions a.icon {
+    text-decoration: none;
+}
+.link.with-padding {
+    padding: 0.5rem;
+}
+pre.related_info {
+    border-top: 1px solid color(var(--background) alpha(0.25));
+    margin-top: 0.7rem;
+    padding-top: 0.7rem;
+}
+
+mdpopups: =====HTML OUTPUT=====
+mdpopups: 
+<div class="diagnostics"><pre class="hints">unexpected token <span style="color: color(var(--foreground) alpha(0.6));">rustc</span><pre class="related_info"><a href="location:rust-analyzer@file:///Volumes/devel/Rust/example/src/main.rs#1,17">src/main.rs:2</a>: original diagnostic</pre></pre><pre class="hints">remove the whole `use` item <span style="color: color(var(--foreground) alpha(0.6));">rustc</span><span style="color: #ac7a68;">:</span><span style="color: color(var(--foreground) alpha(0.6));">unused_imports</span><pre class="related_info"><a href="location:rust-analyzer@file:///Volumes/devel/Rust/example/src/main.rs#2,10">src/main.rs:3</a>: original diagnostic</pre></pre></div><div class="highlight"><pre><span style="color: #333333;">use</span><br></pre></div>
+
+<hr />
+<p>Import or rename items from other crates or modules.</p>
+<p>Usually a <code class="highlight"><span style="color: #333333;">use</span></code> keyword is used to shorten the path required to refer to a module item.
+The keyword may appear in modules, blocks and even functions, usually at the top.</p>
+<p>The most basic usage of the keyword is <code class="highlight"><span style="color: #333333;">use path::to::item;</span></code>,
+though a number of convenient shortcuts are supported:</p>
+<ul>
+<li>Simultaneously binding a list of paths with a common prefix,
+  using the glob-like brace syntax <code class="highlight"><span style="color: #333333;">use a::b::{c, d, e::f, g::h::i};</span></code></li>
+<li>Simultaneously binding a list of paths with a common prefix and their common parent module,
+  using the <a href="https://doc.rust-lang.org/nightly/std/keyword.self.html"><code class="highlight"><span style="color: #333333;">self</span></code></a> keyword, such as <code class="highlight"><span style="color: #333333;">use a::b::{self, c, d::e};</span></code></li>
+<li>Rebinding the target name as a new local name, using the syntax <code class="highlight"><span style="color: #333333;">use p::q::r as x;</span></code>.
+  This can also be used with the last two features: <code class="highlight"><span style="color: #333333;">use a::b::{self as ab, c as abc}</span></code>.</li>
+<li>Binding all paths matching a given prefix,
+  using the asterisk wildcard syntax <code class="highlight"><span style="color: #333333;">use a::b::*;</span></code>.</li>
+<li>Nesting groups of the previous features multiple times,
+  such as <code class="highlight"><span style="color: #333333;">use a::b::{self as ab, c, d::{*, e::f}};</span></code></li>
+<li>Reexporting with visibility modifiers such as <code class="highlight"><span style="color: #333333;">pub use a::b;</span></code></li>
+<li>Importing with <code class="highlight"><span style="color: #333333;">_</span></code> to only import the methods of a trait without binding it to a name
+  (to avoid conflict for example): <code class="highlight"><span style="color: #333333;">use ::std::io::Read as _;</span></code>.</li>
+</ul>
+<p>Using path qualifiers like <a href="https://doc.rust-lang.org/nightly/std/keyword.crate.html"><code class="highlight"><span style="color: #333333;">crate</span></code></a>, <a href="https://doc.rust-lang.org/nightly/std/keyword.super.html"><code class="highlight"><span style="color: #333333;">super</span></code></a> or <a href="https://doc.rust-lang.org/nightly/std/keyword.self.html"><code class="highlight"><span style="color: #333333;">self</span></code></a> is supported: <code class="highlight"><span style="color: #333333;">use crate::a::b;</span></code>.</p>
+<p>Note that when the wildcard <code class="highlight"><span style="color: #333333;">*</span></code> is used on a type, it does not import its methods (though
+for <code class="highlight"><span style="color: #333333;">enum</span></code>s it imports the variants, as shown in the example below).</p>
+<div class="highlight"><pre><span style="color: #333333;">enum ExampleEnum {</span><br><span style="color: #333333;">&nbsp;&nbsp;&nbsp; VariantA,</span><br><span style="color: #333333;">&nbsp;&nbsp;&nbsp; VariantB,</span><br><span style="color: #333333;">}</span><br><span style="color: #333333;">&nbsp;</span><br><span style="color: #333333;">impl ExampleEnum {</span><br><span style="color: #333333;">&nbsp;&nbsp;&nbsp; fn new() -&gt; Self {</span><br><span style="color: #333333;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Self::VariantA</span><br><span style="color: #333333;">&nbsp;&nbsp;&nbsp; }</span><br><span style="color: #333333;">}</span><br><span style="color: #333333;">&nbsp;</span><br><span style="color: #333333;">use ExampleEnum::*;</span><br><span style="color: #333333;">&nbsp;</span><br><span style="color: #333333;">// Compiles.</span><br><span style="color: #333333;">let _ = VariantA;</span><br><span style="color: #333333;">&nbsp;</span><br><span style="color: #333333;">// Does not compile !</span><br><span style="color: #333333;">let n = new();</span><br></pre></div>
+
+<p>For more information on <code class="highlight"><span style="color: #333333;">use</span></code> and paths in general, see the <a href="https://doc.rust-lang.org/nightly/reference/items/use-declarations.html">Reference</a>.</p>
+<p>The differences about paths and the <code class="highlight"><span style="color: #333333;">use</span></code> keyword between the 2015 and 2018 editions
+can also be found in the <a href="https://doc.rust-lang.org/nightly/reference/items/use-declarations.html">Reference</a>.</p><div class="actions">Quick Fix: <a href='code-actions:rust-analyzer'>remove&nbsp;the&nbsp;whole&nbsp;`use`&nbsp;item</a> <span class="color-muted">rust-analyzer</span></div><div class="actions"><a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;point&quot;:32},&quot;command&quot;:&quot;lsp_symbol_definition&quot;,&quot;view_id&quot;:583}'>Definition</a> <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;side_by_side&quot;:true,&quot;point&quot;:32},&quot;command&quot;:&quot;lsp_symbol_definition&quot;,&quot;view_id&quot;:583}' class='icon'>◨</a> | <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;point&quot;:32},&quot;command&quot;:&quot;lsp_symbol_type_definition&quot;,&quot;view_id&quot;:583}'>Type&nbsp;Definition</a> <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;side_by_side&quot;:true,&quot;point&quot;:32},&quot;command&quot;:&quot;lsp_symbol_type_definition&quot;,&quot;view_id&quot;:583}' class='icon'>◨</a> | <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;point&quot;:32},&quot;command&quot;:&quot;lsp_symbol_declaration&quot;,&quot;view_id&quot;:583}'>Declaration</a> <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;side_by_side&quot;:true,&quot;point&quot;:32},&quot;command&quot;:&quot;lsp_symbol_declaration&quot;,&quot;view_id&quot;:583}' class='icon'>◨</a> | <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;point&quot;:32},&quot;command&quot;:&quot;lsp_symbol_implementation&quot;,&quot;view_id&quot;:583}'>Implementation</a> <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;side_by_side&quot;:true,&quot;point&quot;:32},&quot;command&quot;:&quot;lsp_symbol_implementation&quot;,&quot;view_id&quot;:583}' class='icon'>◨</a> | <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;point&quot;:32},&quot;command&quot;:&quot;lsp_symbol_references&quot;,&quot;view_id&quot;:583}'>References</a> | <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;point&quot;:32},&quot;command&quot;:&quot;lsp_symbol_rename&quot;,&quot;view_id&quot;:583}'>Rename</a></div><div class="lsp_popup--spacer"></div>
+mdpopups: =====CSS=====
+mdpopups: 
+html {
+  --mdpopups-fg: var(--foreground);
+  --mdpopups-link: var(--bluish);
+  --mdpopups-font-mono: "sf mono", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  --mdpopups-admon-fg: var(--foreground);
+  --mdpopups-admon-info-fg: var(--foreground);
+  --mdpopups-admon-error-fg: var(--foreground);
+  --mdpopups-admon-warning-fg: var(--foreground);
+  --mdpopups-admon-success-fg: var(--foreground);
+  --mdpopups-admon-bg: var(--background);
+  --mdpopups-admon-info-bg: var(--background);
+  --mdpopups-admon-error-bg: var(--background);
+  --mdpopups-admon-warning-bg: var(--background);
+  --mdpopups-admon-success-bg: var(--background);
+  --mdpopups-admon-accent: color(var(--background) blend(var(--foreground) 50%));
+  --mdpopups-admon-title-fg:  var(--foreground);
+  --mdpopups-admon-info-title-fg:  var(--foreground);
+  --mdpopups-admon-error-title-fg:  var(--foreground);
+  --mdpopups-admon-warning-title-fg:  var(--foreground);
+  --mdpopups-admon-success-title-fg:  var(--foreground);
+  --mdpopups-admon-info-accent: color(var(--background) blend(var(--bluish) 50%));
+  --mdpopups-admon-error-accent: color(var(--background) blend(var(--redish) 50%));
+  --mdpopups-admon-warning-accent: color(var(--background) blend(var(--orangish) 50%));
+  --mdpopups-admon-success-accent: color(var(--background) blend(var(--greenish) 50%));
+  --mdpopups-kbd-fg: var(--background);
+  --mdpopups-kbd-bg: var(--foreground);
+}
+html.light {
+  --mdpopups-bg: color(var(--background) blend(black 95%));
+  --mdpopups-hr: color(var(--background) blend(black 85%));
+  --mdpopups-kbd-border: color(var(--foreground) blend(white 80%));
+  --mdpopups-hl-border: color(var(--background) blend(black 90%));
+  --mdpopups-hl-bg: color(var(--background) blend(black 98%));
+  background-color: var(--mdpopups-bg);
+}
+html.dark {
+  --mdpopups-bg: color(var(--background) blend(white 95%));
+  --mdpopups-hr: color(var(--background) blend(white 85%));
+  --mdpopups-kbd-border: color(var(--foreground) blend(black 80%));
+  --mdpopups-hl-border: color(var(--background) blend(white 90%));
+  --mdpopups-hl-bg: color(var(--background) blend(white 98%));
+  background-color: var(--mdpopups-bg);
+}
+
+html, body { padding: 0; margin: 0; }
+div.mdpopups {
+  display: block;
+  margin: 0;
+  padding: 0;
+  font-size: 1rem;
+  line-height: 1.1rem;
+  color: var(--mdpopups-fg);
+  background-color: var(--mdpopups-bg);
+}
+.mdpopups a {
+  color: var(--mdpopups-link);
+}
+.mdpopups .highlight,
+.mdpopups code,
+.mdpopups var,
+.mdpopups tt {
+  font-family: var(--mdpopups-font-mono);
+}
+.mdpopups div { display: block; }
+
+.mdpopups h1 { font-size: 1.5rem; }
+.mdpopups h2 { font-size: 1.4rem; }
+.mdpopups h3 { font-size: 1.3rem; }
+.mdpopups h4 { font-size: 1.2rem; }
+.mdpopups h5 { font-size: 1.1rem; }
+.mdpopups h6 { font-size: 1rem; }
+.mdpopups h1, .mdpopups h2, .mdpopups h3, .mdpopups h4, .mdpopups h5, .mdpopups h6 {
+  margin-top: 0.2rem;
+  margin-bottom: 0.2rem;
+}
+
+.mdpopups blockquote { display: block; font-style: italic; }
+
+.mdpopups hr {
+  display: block;
+  border-color: var(--mdpopups-hr);
+  border-style: solid;
+  border-width: 0 0 1px 0;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.mdpopups dl { display: block; }
+.mdpopups dt {
+  display: block;
+  font-style: italic;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+.mdpopups dd {
+  display: block;
+  margin-left: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.mdpopups pre { display: block; }
+
+.mdpopups blockquote, .mdpopups ol, .mdpopups ul, .mdpopups dl, .mdpopups p {
+  padding: 0;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  margin-left: 0;
+  margin-right: 0;
+}
+.mdpopups ul, .mdpopups ol { padding-left: 2rem; }
+
+.mdpopups kbd {
+  display: inline;
+  font-size: 0.9rem;
+  padding: 0.05rem 0.25rem;
+  border-radius: 0.25rem;
+  background-color: var(--mdpopups-kbd-bg);
+  color: var(--mdpopups-kbd-fg);
+  border: 1px solid var(--mdpopups-kbd-border);
+}
+
+.mdpopups .admonition {
+  display: block;
+  padding: 0 0.5rem 0.5rem 0.5rem;
+  border-radius: 0.25rem;
+  margin-bottom: 0.5rem;
+  background-color: var(--mdpopups-admon-bg);
+  color: var(--mdpopups-admon-fg);
+  border: 1px solid var(--mdpopups-admon-accent);
+}
+.mdpopups .admonition-title {
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin: 0 -0.5rem 0.5rem -0.5rem;
+  padding: 0.1rem 0.5rem 0.1rem 0.5rem;
+  border-top-left-radius: 0.25rem;
+  border-top-right-radius: 0.25rem;
+  color:  var(--mdpopups-admon-title-fg);
+  background-color: var(--mdpopups-admon-accent);
+}
+
+.mdpopups .admonition.panel-success .admonition-title {
+  color: var(--mdpopups-admon-success-title-fg);
+  background-color: var(--mdpopups-admon-success-accent);
+}
+.mdpopups .admonition.panel-success {
+  color:  var(--mdpopups-admon-success-fg);
+  background-color: var(--mdpopups-admon-success-bg);
+  border-color: var(--mdpopups-admon-success-accent);
+}
+.mdpopups .admonition.panel-warning .admonition-title {
+  color: var(--mdpopups-admon-warning-title-fg);
+  background-color: var(--mdpopups-admon-warning-accent);
+}
+.mdpopups .admonition.panel-warning {
+  color:  var(--mdpopups-admon-warning-fg);
+  background-color: var(--mdpopups-admon-warning-bg);
+  border-color: var(--mdpopups-admon-warning-accent);
+}
+.mdpopups .admonition.panel-error .admonition-title {
+  color: var(--mdpopups-admon-error-title-fg);
+  background-color: var(--mdpopups-admon-error-accent);
+}
+.mdpopups .admonition.panel-error {
+  color:  var(--mdpopups-admon-error-fg);
+  background-color: var(--mdpopups-admon-error-bg);
+  border-color: var(--mdpopups-admon-error-accent);
+}
+.mdpopups .admonition.panel-info .admonition-title {
+  color: var(--mdpopups-admon-info-title-fg);
+  background-color: var(--mdpopups-admon-info-accent);
+}
+.mdpopups .admonition.panel-info {
+  color:  var(--mdpopups-admon-info-fg);
+  background-color: var(--mdpopups-admon-info-bg);
+  border-color: var(--mdpopups-admon-info-accent);
+}
+.mdpopups .highlight {
+  border: 1px solid var(--mdpopups-hl-border);
+  border-radius: 0.25rem;
+  font-size: 0.9rem;
+  background-color: var(--mdpopups-hl-bg);
+}
+.mdpopups div.highlight,
+.mdpopups pre.highlight {
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+.mdpopups code.highlight {
+  padding: 0.05rem 0.25rem;
+}
+
+.lsp_popup {
+    margin: 0.5rem 0.5rem 0 0.5rem;
+    font-family: system;
+}
+.lsp_popup--spacer {
+    margin-top: 0.5rem;
+}
+.lsp_popup hr {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    border-color: color(var(--foreground) alpha(0.10));
+}
+.lsp_popup h1,
+.lsp_popup h2,
+.lsp_popup h3,
+.lsp_popup h4,
+.lsp_popup h5,
+.lsp_popup h6 {
+    font-size: 1rem;
+}
+.highlight {
+    border-width: 0;
+    border-radius: 0;
+}
+.color-muted {
+    color: color(var(--foreground) alpha(0.50));
+}
+.diagnostics {
+    margin-bottom: 0.5rem;
+    font-family: var(--mdpopups-font-mono);
+}
+.errors {
+    border-width: 0;
+    background-color: color(var(--redish) alpha(0.25));
+    color: var(--foreground);
+    padding: 0.5rem;
+}
+.warnings {
+    border-width: 0;
+    background-color: color(var(--yellowish) alpha(0.25));
+    color: var(--foreground);
+    padding: 0.5rem;
+}
+.info {
+    border-width: 0;
+    background-color: color(var(--bluish) alpha(0.25));
+    color: var(--foreground);
+    padding: 0.5rem;
+}
+.hints {
+    border-width: 0;
+    background-color: color(var(--bluish) alpha(0.25));
+    color: var(--foreground);
+    padding: 0.5rem;
+}
+.actions {
+    font-family: system;
+    border-width: 0;
+    background-color: color(var(--foreground) alpha(0.1));
+    color: var(--foreground);
+    padding: 0.5rem;
+}
+.actions a.icon {
+    text-decoration: none;
+}
+.link.with-padding {
+    padding: 0.5rem;
+}
+pre.related_info {
+    border-top: 1px solid color(var(--background) alpha(0.25));
+    margin-top: 0.7rem;
+    padding-top: 0.7rem;
+}
+
+mdpopups: =====HTML OUTPUT=====
+mdpopups: 
+<div class="diagnostics"><pre class="hints">unexpected token <span style="color: color(var(--foreground) alpha(0.6));">rustc</span><pre class="related_info"><a href="location:rust-analyzer@file:///Volumes/devel/Rust/example/src/main.rs#1,17">src/main.rs:2</a>: original diagnostic</pre></pre><pre class="hints">remove the whole `use` item <span style="color: color(var(--foreground) alpha(0.6));">rustc</span><span style="color: #ac7a68;">:</span><span style="color: color(var(--foreground) alpha(0.6));">unused_imports</span><pre class="related_info"><a href="location:rust-analyzer@file:///Volumes/devel/Rust/example/src/main.rs#2,10">src/main.rs:3</a>: original diagnostic</pre></pre></div><div class="highlight"><pre><span style="color: #333333;">use</span><br></pre></div>
+
+<hr />
+<p>Import or rename items from other crates or modules.</p>
+<p>Usually a <code class="highlight"><span style="color: #333333;">use</span></code> keyword is used to shorten the path required to refer to a module item.
+The keyword may appear in modules, blocks and even functions, usually at the top.</p>
+<p>The most basic usage of the keyword is <code class="highlight"><span style="color: #333333;">use path::to::item;</span></code>,
+though a number of convenient shortcuts are supported:</p>
+<ul>
+<li>Simultaneously binding a list of paths with a common prefix,
+  using the glob-like brace syntax <code class="highlight"><span style="color: #333333;">use a::b::{c, d, e::f, g::h::i};</span></code></li>
+<li>Simultaneously binding a list of paths with a common prefix and their common parent module,
+  using the <a href="https://doc.rust-lang.org/nightly/std/keyword.self.html"><code class="highlight"><span style="color: #333333;">self</span></code></a> keyword, such as <code class="highlight"><span style="color: #333333;">use a::b::{self, c, d::e};</span></code></li>
+<li>Rebinding the target name as a new local name, using the syntax <code class="highlight"><span style="color: #333333;">use p::q::r as x;</span></code>.
+  This can also be used with the last two features: <code class="highlight"><span style="color: #333333;">use a::b::{self as ab, c as abc}</span></code>.</li>
+<li>Binding all paths matching a given prefix,
+  using the asterisk wildcard syntax <code class="highlight"><span style="color: #333333;">use a::b::*;</span></code>.</li>
+<li>Nesting groups of the previous features multiple times,
+  such as <code class="highlight"><span style="color: #333333;">use a::b::{self as ab, c, d::{*, e::f}};</span></code></li>
+<li>Reexporting with visibility modifiers such as <code class="highlight"><span style="color: #333333;">pub use a::b;</span></code></li>
+<li>Importing with <code class="highlight"><span style="color: #333333;">_</span></code> to only import the methods of a trait without binding it to a name
+  (to avoid conflict for example): <code class="highlight"><span style="color: #333333;">use ::std::io::Read as _;</span></code>.</li>
+</ul>
+<p>Using path qualifiers like <a href="https://doc.rust-lang.org/nightly/std/keyword.crate.html"><code class="highlight"><span style="color: #333333;">crate</span></code></a>, <a href="https://doc.rust-lang.org/nightly/std/keyword.super.html"><code class="highlight"><span style="color: #333333;">super</span></code></a> or <a href="https://doc.rust-lang.org/nightly/std/keyword.self.html"><code class="highlight"><span style="color: #333333;">self</span></code></a> is supported: <code class="highlight"><span style="color: #333333;">use crate::a::b;</span></code>.</p>
+<p>Note that when the wildcard <code class="highlight"><span style="color: #333333;">*</span></code> is used on a type, it does not import its methods (though
+for <code class="highlight"><span style="color: #333333;">enum</span></code>s it imports the variants, as shown in the example below).</p>
+<div class="highlight"><pre><span style="color: #333333;">enum ExampleEnum {</span><br><span style="color: #333333;">&nbsp;&nbsp;&nbsp; VariantA,</span><br><span style="color: #333333;">&nbsp;&nbsp;&nbsp; VariantB,</span><br><span style="color: #333333;">}</span><br><span style="color: #333333;">&nbsp;</span><br><span style="color: #333333;">impl ExampleEnum {</span><br><span style="color: #333333;">&nbsp;&nbsp;&nbsp; fn new() -&gt; Self {</span><br><span style="color: #333333;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Self::VariantA</span><br><span style="color: #333333;">&nbsp;&nbsp;&nbsp; }</span><br><span style="color: #333333;">}</span><br><span style="color: #333333;">&nbsp;</span><br><span style="color: #333333;">use ExampleEnum::*;</span><br><span style="color: #333333;">&nbsp;</span><br><span style="color: #333333;">// Compiles.</span><br><span style="color: #333333;">let _ = VariantA;</span><br><span style="color: #333333;">&nbsp;</span><br><span style="color: #333333;">// Does not compile !</span><br><span style="color: #333333;">let n = new();</span><br></pre></div>
+
+<p>For more information on <code class="highlight"><span style="color: #333333;">use</span></code> and paths in general, see the <a href="https://doc.rust-lang.org/nightly/reference/items/use-declarations.html">Reference</a>.</p>
+<p>The differences about paths and the <code class="highlight"><span style="color: #333333;">use</span></code> keyword between the 2015 and 2018 editions
+can also be found in the <a href="https://doc.rust-lang.org/nightly/reference/items/use-declarations.html">Reference</a>.</p><div class="actions">Quick Fix: <a href='code-actions:rust-analyzer'>remove&nbsp;the&nbsp;whole&nbsp;`use`&nbsp;item</a> <span class="color-muted">rust-analyzer</span></div><div class="actions"><a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;point&quot;:32},&quot;command&quot;:&quot;lsp_symbol_definition&quot;,&quot;view_id&quot;:583}'>Definition</a> <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;side_by_side&quot;:true,&quot;point&quot;:32},&quot;command&quot;:&quot;lsp_symbol_definition&quot;,&quot;view_id&quot;:583}' class='icon'>◨</a> | <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;point&quot;:32},&quot;command&quot;:&quot;lsp_symbol_type_definition&quot;,&quot;view_id&quot;:583}'>Type&nbsp;Definition</a> <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;side_by_side&quot;:true,&quot;point&quot;:32},&quot;command&quot;:&quot;lsp_symbol_type_definition&quot;,&quot;view_id&quot;:583}' class='icon'>◨</a> | <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;point&quot;:32},&quot;command&quot;:&quot;lsp_symbol_declaration&quot;,&quot;view_id&quot;:583}'>Declaration</a> <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;side_by_side&quot;:true,&quot;point&quot;:32},&quot;command&quot;:&quot;lsp_symbol_declaration&quot;,&quot;view_id&quot;:583}' class='icon'>◨</a> | <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;point&quot;:32},&quot;command&quot;:&quot;lsp_symbol_implementation&quot;,&quot;view_id&quot;:583}'>Implementation</a> <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;side_by_side&quot;:true,&quot;point&quot;:32},&quot;command&quot;:&quot;lsp_symbol_implementation&quot;,&quot;view_id&quot;:583}' class='icon'>◨</a> | <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;point&quot;:32},&quot;command&quot;:&quot;lsp_symbol_references&quot;,&quot;view_id&quot;:583}'>References</a> | <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;point&quot;:32},&quot;command&quot;:&quot;lsp_symbol_rename&quot;,&quot;view_id&quot;:583}'>Rename</a></div><div class="lsp_popup--spacer"></div>
+mdpopups: =====CSS=====
+mdpopups: 
+html {
+  --mdpopups-fg: var(--foreground);
+  --mdpopups-link: var(--bluish);
+  --mdpopups-font-mono: "sf mono", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  --mdpopups-admon-fg: var(--foreground);
+  --mdpopups-admon-info-fg: var(--foreground);
+  --mdpopups-admon-error-fg: var(--foreground);
+  --mdpopups-admon-warning-fg: var(--foreground);
+  --mdpopups-admon-success-fg: var(--foreground);
+  --mdpopups-admon-bg: var(--background);
+  --mdpopups-admon-info-bg: var(--background);
+  --mdpopups-admon-error-bg: var(--background);
+  --mdpopups-admon-warning-bg: var(--background);
+  --mdpopups-admon-success-bg: var(--background);
+  --mdpopups-admon-accent: color(var(--background) blend(var(--foreground) 50%));
+  --mdpopups-admon-title-fg:  var(--foreground);
+  --mdpopups-admon-info-title-fg:  var(--foreground);
+  --mdpopups-admon-error-title-fg:  var(--foreground);
+  --mdpopups-admon-warning-title-fg:  var(--foreground);
+  --mdpopups-admon-success-title-fg:  var(--foreground);
+  --mdpopups-admon-info-accent: color(var(--background) blend(var(--bluish) 50%));
+  --mdpopups-admon-error-accent: color(var(--background) blend(var(--redish) 50%));
+  --mdpopups-admon-warning-accent: color(var(--background) blend(var(--orangish) 50%));
+  --mdpopups-admon-success-accent: color(var(--background) blend(var(--greenish) 50%));
+  --mdpopups-kbd-fg: var(--background);
+  --mdpopups-kbd-bg: var(--foreground);
+}
+html.light {
+  --mdpopups-bg: color(var(--background) blend(black 95%));
+  --mdpopups-hr: color(var(--background) blend(black 85%));
+  --mdpopups-kbd-border: color(var(--foreground) blend(white 80%));
+  --mdpopups-hl-border: color(var(--background) blend(black 90%));
+  --mdpopups-hl-bg: color(var(--background) blend(black 98%));
+  background-color: var(--mdpopups-bg);
+}
+html.dark {
+  --mdpopups-bg: color(var(--background) blend(white 95%));
+  --mdpopups-hr: color(var(--background) blend(white 85%));
+  --mdpopups-kbd-border: color(var(--foreground) blend(black 80%));
+  --mdpopups-hl-border: color(var(--background) blend(white 90%));
+  --mdpopups-hl-bg: color(var(--background) blend(white 98%));
+  background-color: var(--mdpopups-bg);
+}
+
+html, body { padding: 0; margin: 0; }
+div.mdpopups {
+  display: block;
+  margin: 0;
+  padding: 0;
+  font-size: 1rem;
+  line-height: 1.1rem;
+  color: var(--mdpopups-fg);
+  background-color: var(--mdpopups-bg);
+}
+.mdpopups a {
+  color: var(--mdpopups-link);
+}
+.mdpopups .highlight,
+.mdpopups code,
+.mdpopups var,
+.mdpopups tt {
+  font-family: var(--mdpopups-font-mono);
+}
+.mdpopups div { display: block; }
+
+.mdpopups h1 { font-size: 1.5rem; }
+.mdpopups h2 { font-size: 1.4rem; }
+.mdpopups h3 { font-size: 1.3rem; }
+.mdpopups h4 { font-size: 1.2rem; }
+.mdpopups h5 { font-size: 1.1rem; }
+.mdpopups h6 { font-size: 1rem; }
+.mdpopups h1, .mdpopups h2, .mdpopups h3, .mdpopups h4, .mdpopups h5, .mdpopups h6 {
+  margin-top: 0.2rem;
+  margin-bottom: 0.2rem;
+}
+
+.mdpopups blockquote { display: block; font-style: italic; }
+
+.mdpopups hr {
+  display: block;
+  border-color: var(--mdpopups-hr);
+  border-style: solid;
+  border-width: 0 0 1px 0;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.mdpopups dl { display: block; }
+.mdpopups dt {
+  display: block;
+  font-style: italic;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+.mdpopups dd {
+  display: block;
+  margin-left: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.mdpopups pre { display: block; }
+
+.mdpopups blockquote, .mdpopups ol, .mdpopups ul, .mdpopups dl, .mdpopups p {
+  padding: 0;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  margin-left: 0;
+  margin-right: 0;
+}
+.mdpopups ul, .mdpopups ol { padding-left: 2rem; }
+
+.mdpopups kbd {
+  display: inline;
+  font-size: 0.9rem;
+  padding: 0.05rem 0.25rem;
+  border-radius: 0.25rem;
+  background-color: var(--mdpopups-kbd-bg);
+  color: var(--mdpopups-kbd-fg);
+  border: 1px solid var(--mdpopups-kbd-border);
+}
+
+.mdpopups .admonition {
+  display: block;
+  padding: 0 0.5rem 0.5rem 0.5rem;
+  border-radius: 0.25rem;
+  margin-bottom: 0.5rem;
+  background-color: var(--mdpopups-admon-bg);
+  color: var(--mdpopups-admon-fg);
+  border: 1px solid var(--mdpopups-admon-accent);
+}
+.mdpopups .admonition-title {
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin: 0 -0.5rem 0.5rem -0.5rem;
+  padding: 0.1rem 0.5rem 0.1rem 0.5rem;
+  border-top-left-radius: 0.25rem;
+  border-top-right-radius: 0.25rem;
+  color:  var(--mdpopups-admon-title-fg);
+  background-color: var(--mdpopups-admon-accent);
+}
+
+.mdpopups .admonition.panel-success .admonition-title {
+  color: var(--mdpopups-admon-success-title-fg);
+  background-color: var(--mdpopups-admon-success-accent);
+}
+.mdpopups .admonition.panel-success {
+  color:  var(--mdpopups-admon-success-fg);
+  background-color: var(--mdpopups-admon-success-bg);
+  border-color: var(--mdpopups-admon-success-accent);
+}
+.mdpopups .admonition.panel-warning .admonition-title {
+  color: var(--mdpopups-admon-warning-title-fg);
+  background-color: var(--mdpopups-admon-warning-accent);
+}
+.mdpopups .admonition.panel-warning {
+  color:  var(--mdpopups-admon-warning-fg);
+  background-color: var(--mdpopups-admon-warning-bg);
+  border-color: var(--mdpopups-admon-warning-accent);
+}
+.mdpopups .admonition.panel-error .admonition-title {
+  color: var(--mdpopups-admon-error-title-fg);
+  background-color: var(--mdpopups-admon-error-accent);
+}
+.mdpopups .admonition.panel-error {
+  color:  var(--mdpopups-admon-error-fg);
+  background-color: var(--mdpopups-admon-error-bg);
+  border-color: var(--mdpopups-admon-error-accent);
+}
+.mdpopups .admonition.panel-info .admonition-title {
+  color: var(--mdpopups-admon-info-title-fg);
+  background-color: var(--mdpopups-admon-info-accent);
+}
+.mdpopups .admonition.panel-info {
+  color:  var(--mdpopups-admon-info-fg);
+  background-color: var(--mdpopups-admon-info-bg);
+  border-color: var(--mdpopups-admon-info-accent);
+}
+.mdpopups .highlight {
+  border: 1px solid var(--mdpopups-hl-border);
+  border-radius: 0.25rem;
+  font-size: 0.9rem;
+  background-color: var(--mdpopups-hl-bg);
+}
+.mdpopups div.highlight,
+.mdpopups pre.highlight {
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+.mdpopups code.highlight {
+  padding: 0.05rem 0.25rem;
+}
+
+.lsp_popup {
+    margin: 0.5rem 0.5rem 0 0.5rem;
+    font-family: system;
+}
+.lsp_popup--spacer {
+    margin-top: 0.5rem;
+}
+.lsp_popup hr {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    border-color: color(var(--foreground) alpha(0.10));
+}
+.lsp_popup h1,
+.lsp_popup h2,
+.lsp_popup h3,
+.lsp_popup h4,
+.lsp_popup h5,
+.lsp_popup h6 {
+    font-size: 1rem;
+}
+.highlight {
+    border-width: 0;
+    border-radius: 0;
+}
+.color-muted {
+    color: color(var(--foreground) alpha(0.50));
+}
+.diagnostics {
+    margin-bottom: 0.5rem;
+    font-family: var(--mdpopups-font-mono);
+}
+.errors {
+    border-width: 0;
+    background-color: color(var(--redish) alpha(0.25));
+    color: var(--foreground);
+    padding: 0.5rem;
+}
+.warnings {
+    border-width: 0;
+    background-color: color(var(--yellowish) alpha(0.25));
+    color: var(--foreground);
+    padding: 0.5rem;
+}
+.info {
+    border-width: 0;
+    background-color: color(var(--bluish) alpha(0.25));
+    color: var(--foreground);
+    padding: 0.5rem;
+}
+.hints {
+    border-width: 0;
+    background-color: color(var(--bluish) alpha(0.25));
+    color: var(--foreground);
+    padding: 0.5rem;
+}
+.actions {
+    font-family: system;
+    border-width: 0;
+    background-color: color(var(--foreground) alpha(0.1));
+    color: var(--foreground);
+    padding: 0.5rem;
+}
+.actions a.icon {
+    text-decoration: none;
+}
+.link.with-padding {
+    padding: 0.5rem;
+}
+pre.related_info {
+    border-top: 1px solid color(var(--background) alpha(0.25));
+    margin-top: 0.7rem;
+    padding-top: 0.7rem;
+}
+
+mdpopups: =====HTML OUTPUT=====
+mdpopups: 
+<div class="diagnostics"><pre class="hints">unexpected token <span style="color: color(var(--foreground) alpha(0.6));">rustc</span><pre class="related_info"><a href="location:rust-analyzer@file:///Volumes/devel/Rust/example/src/main.rs#1,17">src/main.rs:2</a>: original diagnostic</pre></pre><pre class="hints">remove the whole `use` item <span style="color: color(var(--foreground) alpha(0.6));">rustc</span><span style="color: #ac7a68;">:</span><span style="color: color(var(--foreground) alpha(0.6));">unused_imports</span><pre class="related_info"><a href="location:rust-analyzer@file:///Volumes/devel/Rust/example/src/main.rs#2,10">src/main.rs:3</a>: original diagnostic</pre></pre></div><div class="lsp_popup--spacer"></div>
+mdpopups: =====CSS=====
+mdpopups: 
+html {
+  --mdpopups-fg: var(--foreground);
+  --mdpopups-link: var(--bluish);
+  --mdpopups-font-mono: "sf mono", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  --mdpopups-admon-fg: var(--foreground);
+  --mdpopups-admon-info-fg: var(--foreground);
+  --mdpopups-admon-error-fg: var(--foreground);
+  --mdpopups-admon-warning-fg: var(--foreground);
+  --mdpopups-admon-success-fg: var(--foreground);
+  --mdpopups-admon-bg: var(--background);
+  --mdpopups-admon-info-bg: var(--background);
+  --mdpopups-admon-error-bg: var(--background);
+  --mdpopups-admon-warning-bg: var(--background);
+  --mdpopups-admon-success-bg: var(--background);
+  --mdpopups-admon-accent: color(var(--background) blend(var(--foreground) 50%));
+  --mdpopups-admon-title-fg:  var(--foreground);
+  --mdpopups-admon-info-title-fg:  var(--foreground);
+  --mdpopups-admon-error-title-fg:  var(--foreground);
+  --mdpopups-admon-warning-title-fg:  var(--foreground);
+  --mdpopups-admon-success-title-fg:  var(--foreground);
+  --mdpopups-admon-info-accent: color(var(--background) blend(var(--bluish) 50%));
+  --mdpopups-admon-error-accent: color(var(--background) blend(var(--redish) 50%));
+  --mdpopups-admon-warning-accent: color(var(--background) blend(var(--orangish) 50%));
+  --mdpopups-admon-success-accent: color(var(--background) blend(var(--greenish) 50%));
+  --mdpopups-kbd-fg: var(--background);
+  --mdpopups-kbd-bg: var(--foreground);
+}
+html.light {
+  --mdpopups-bg: color(var(--background) blend(black 95%));
+  --mdpopups-hr: color(var(--background) blend(black 85%));
+  --mdpopups-kbd-border: color(var(--foreground) blend(white 80%));
+  --mdpopups-hl-border: color(var(--background) blend(black 90%));
+  --mdpopups-hl-bg: color(var(--background) blend(black 98%));
+  background-color: var(--mdpopups-bg);
+}
+html.dark {
+  --mdpopups-bg: color(var(--background) blend(white 95%));
+  --mdpopups-hr: color(var(--background) blend(white 85%));
+  --mdpopups-kbd-border: color(var(--foreground) blend(black 80%));
+  --mdpopups-hl-border: color(var(--background) blend(white 90%));
+  --mdpopups-hl-bg: color(var(--background) blend(white 98%));
+  background-color: var(--mdpopups-bg);
+}
+
+html, body { padding: 0; margin: 0; }
+div.mdpopups {
+  display: block;
+  margin: 0;
+  padding: 0;
+  font-size: 1rem;
+  line-height: 1.1rem;
+  color: var(--mdpopups-fg);
+  background-color: var(--mdpopups-bg);
+}
+.mdpopups a {
+  color: var(--mdpopups-link);
+}
+.mdpopups .highlight,
+.mdpopups code,
+.mdpopups var,
+.mdpopups tt {
+  font-family: var(--mdpopups-font-mono);
+}
+.mdpopups div { display: block; }
+
+.mdpopups h1 { font-size: 1.5rem; }
+.mdpopups h2 { font-size: 1.4rem; }
+.mdpopups h3 { font-size: 1.3rem; }
+.mdpopups h4 { font-size: 1.2rem; }
+.mdpopups h5 { font-size: 1.1rem; }
+.mdpopups h6 { font-size: 1rem; }
+.mdpopups h1, .mdpopups h2, .mdpopups h3, .mdpopups h4, .mdpopups h5, .mdpopups h6 {
+  margin-top: 0.2rem;
+  margin-bottom: 0.2rem;
+}
+
+.mdpopups blockquote { display: block; font-style: italic; }
+
+.mdpopups hr {
+  display: block;
+  border-color: var(--mdpopups-hr);
+  border-style: solid;
+  border-width: 0 0 1px 0;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.mdpopups dl { display: block; }
+.mdpopups dt {
+  display: block;
+  font-style: italic;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+.mdpopups dd {
+  display: block;
+  margin-left: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.mdpopups pre { display: block; }
+
+.mdpopups blockquote, .mdpopups ol, .mdpopups ul, .mdpopups dl, .mdpopups p {
+  padding: 0;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  margin-left: 0;
+  margin-right: 0;
+}
+.mdpopups ul, .mdpopups ol { padding-left: 2rem; }
+
+.mdpopups kbd {
+  display: inline;
+  font-size: 0.9rem;
+  padding: 0.05rem 0.25rem;
+  border-radius: 0.25rem;
+  background-color: var(--mdpopups-kbd-bg);
+  color: var(--mdpopups-kbd-fg);
+  border: 1px solid var(--mdpopups-kbd-border);
+}
+
+.mdpopups .admonition {
+  display: block;
+  padding: 0 0.5rem 0.5rem 0.5rem;
+  border-radius: 0.25rem;
+  margin-bottom: 0.5rem;
+  background-color: var(--mdpopups-admon-bg);
+  color: var(--mdpopups-admon-fg);
+  border: 1px solid var(--mdpopups-admon-accent);
+}
+.mdpopups .admonition-title {
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin: 0 -0.5rem 0.5rem -0.5rem;
+  padding: 0.1rem 0.5rem 0.1rem 0.5rem;
+  border-top-left-radius: 0.25rem;
+  border-top-right-radius: 0.25rem;
+  color:  var(--mdpopups-admon-title-fg);
+  background-color: var(--mdpopups-admon-accent);
+}
+
+.mdpopups .admonition.panel-success .admonition-title {
+  color: var(--mdpopups-admon-success-title-fg);
+  background-color: var(--mdpopups-admon-success-accent);
+}
+.mdpopups .admonition.panel-success {
+  color:  var(--mdpopups-admon-success-fg);
+  background-color: var(--mdpopups-admon-success-bg);
+  border-color: var(--mdpopups-admon-success-accent);
+}
+.mdpopups .admonition.panel-warning .admonition-title {
+  color: var(--mdpopups-admon-warning-title-fg);
+  background-color: var(--mdpopups-admon-warning-accent);
+}
+.mdpopups .admonition.panel-warning {
+  color:  var(--mdpopups-admon-warning-fg);
+  background-color: var(--mdpopups-admon-warning-bg);
+  border-color: var(--mdpopups-admon-warning-accent);
+}
+.mdpopups .admonition.panel-error .admonition-title {
+  color: var(--mdpopups-admon-error-title-fg);
+  background-color: var(--mdpopups-admon-error-accent);
+}
+.mdpopups .admonition.panel-error {
+  color:  var(--mdpopups-admon-error-fg);
+  background-color: var(--mdpopups-admon-error-bg);
+  border-color: var(--mdpopups-admon-error-accent);
+}
+.mdpopups .admonition.panel-info .admonition-title {
+  color: var(--mdpopups-admon-info-title-fg);
+  background-color: var(--mdpopups-admon-info-accent);
+}
+.mdpopups .admonition.panel-info {
+  color:  var(--mdpopups-admon-info-fg);
+  background-color: var(--mdpopups-admon-info-bg);
+  border-color: var(--mdpopups-admon-info-accent);
+}
+.mdpopups .highlight {
+  border: 1px solid var(--mdpopups-hl-border);
+  border-radius: 0.25rem;
+  font-size: 0.9rem;
+  background-color: var(--mdpopups-hl-bg);
+}
+.mdpopups div.highlight,
+.mdpopups pre.highlight {
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+.mdpopups code.highlight {
+  padding: 0.05rem 0.25rem;
+}
+
+.lsp_popup {
+    margin: 0.5rem 0.5rem 0 0.5rem;
+    font-family: system;
+}
+.lsp_popup--spacer {
+    margin-top: 0.5rem;
+}
+.lsp_popup hr {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    border-color: color(var(--foreground) alpha(0.10));
+}
+.lsp_popup h1,
+.lsp_popup h2,
+.lsp_popup h3,
+.lsp_popup h4,
+.lsp_popup h5,
+.lsp_popup h6 {
+    font-size: 1rem;
+}
+.highlight {
+    border-width: 0;
+    border-radius: 0;
+}
+.color-muted {
+    color: color(var(--foreground) alpha(0.50));
+}
+.diagnostics {
+    margin-bottom: 0.5rem;
+    font-family: var(--mdpopups-font-mono);
+}
+.errors {
+    border-width: 0;
+    background-color: color(var(--redish) alpha(0.25));
+    color: var(--foreground);
+    padding: 0.5rem;
+}
+.warnings {
+    border-width: 0;
+    background-color: color(var(--yellowish) alpha(0.25));
+    color: var(--foreground);
+    padding: 0.5rem;
+}
+.info {
+    border-width: 0;
+    background-color: color(var(--bluish) alpha(0.25));
+    color: var(--foreground);
+    padding: 0.5rem;
+}
+.hints {
+    border-width: 0;
+    background-color: color(var(--bluish) alpha(0.25));
+    color: var(--foreground);
+    padding: 0.5rem;
+}
+.actions {
+    font-family: system;
+    border-width: 0;
+    background-color: color(var(--foreground) alpha(0.1));
+    color: var(--foreground);
+    padding: 0.5rem;
+}
+.actions a.icon {
+    text-decoration: none;
+}
+.link.with-padding {
+    padding: 0.5rem;
+}
+pre.related_info {
+    border-top: 1px solid color(var(--background) alpha(0.25));
+    margin-top: 0.7rem;
+    padding-top: 0.7rem;
+}
+
+mdpopups: =====HTML OUTPUT=====
+mdpopups: 
+<div class="diagnostics"><pre class="hints">unexpected token <span style="color: color(var(--foreground) alpha(0.6));">rustc</span><pre class="related_info"><a href="location:rust-analyzer@file:///Volumes/devel/Rust/example/src/main.rs#1,17">src/main.rs:2</a>: original diagnostic</pre></pre><pre class="hints">remove the whole `use` item <span style="color: color(var(--foreground) alpha(0.6));">rustc</span><span style="color: #ac7a68;">:</span><span style="color: color(var(--foreground) alpha(0.6));">unused_imports</span><pre class="related_info"><a href="location:rust-analyzer@file:///Volumes/devel/Rust/example/src/main.rs#2,10">src/main.rs:3</a>: original diagnostic</pre></pre></div><div class="highlight"><pre><span style="color: #333333;">use</span><br></pre></div>
+
+<hr />
+<p>Import or rename items from other crates or modules.</p>
+<p>Usually a <code class="highlight"><span style="color: #333333;">use</span></code> keyword is used to shorten the path required to refer to a module item.
+The keyword may appear in modules, blocks and even functions, usually at the top.</p>
+<p>The most basic usage of the keyword is <code class="highlight"><span style="color: #333333;">use path::to::item;</span></code>,
+though a number of convenient shortcuts are supported:</p>
+<ul>
+<li>Simultaneously binding a list of paths with a common prefix,
+  using the glob-like brace syntax <code class="highlight"><span style="color: #333333;">use a::b::{c, d, e::f, g::h::i};</span></code></li>
+<li>Simultaneously binding a list of paths with a common prefix and their common parent module,
+  using the <a href="https://doc.rust-lang.org/nightly/std/keyword.self.html"><code class="highlight"><span style="color: #333333;">self</span></code></a> keyword, such as <code class="highlight"><span style="color: #333333;">use a::b::{self, c, d::e};</span></code></li>
+<li>Rebinding the target name as a new local name, using the syntax <code class="highlight"><span style="color: #333333;">use p::q::r as x;</span></code>.
+  This can also be used with the last two features: <code class="highlight"><span style="color: #333333;">use a::b::{self as ab, c as abc}</span></code>.</li>
+<li>Binding all paths matching a given prefix,
+  using the asterisk wildcard syntax <code class="highlight"><span style="color: #333333;">use a::b::*;</span></code>.</li>
+<li>Nesting groups of the previous features multiple times,
+  such as <code class="highlight"><span style="color: #333333;">use a::b::{self as ab, c, d::{*, e::f}};</span></code></li>
+<li>Reexporting with visibility modifiers such as <code class="highlight"><span style="color: #333333;">pub use a::b;</span></code></li>
+<li>Importing with <code class="highlight"><span style="color: #333333;">_</span></code> to only import the methods of a trait without binding it to a name
+  (to avoid conflict for example): <code class="highlight"><span style="color: #333333;">use ::std::io::Read as _;</span></code>.</li>
+</ul>
+<p>Using path qualifiers like <a href="https://doc.rust-lang.org/nightly/std/keyword.crate.html"><code class="highlight"><span style="color: #333333;">crate</span></code></a>, <a href="https://doc.rust-lang.org/nightly/std/keyword.super.html"><code class="highlight"><span style="color: #333333;">super</span></code></a> or <a href="https://doc.rust-lang.org/nightly/std/keyword.self.html"><code class="highlight"><span style="color: #333333;">self</span></code></a> is supported: <code class="highlight"><span style="color: #333333;">use crate::a::b;</span></code>.</p>
+<p>Note that when the wildcard <code class="highlight"><span style="color: #333333;">*</span></code> is used on a type, it does not import its methods (though
+for <code class="highlight"><span style="color: #333333;">enum</span></code>s it imports the variants, as shown in the example below).</p>
+<div class="highlight"><pre><span style="color: #333333;">enum ExampleEnum {</span><br><span style="color: #333333;">&nbsp;&nbsp;&nbsp; VariantA,</span><br><span style="color: #333333;">&nbsp;&nbsp;&nbsp; VariantB,</span><br><span style="color: #333333;">}</span><br><span style="color: #333333;">&nbsp;</span><br><span style="color: #333333;">impl ExampleEnum {</span><br><span style="color: #333333;">&nbsp;&nbsp;&nbsp; fn new() -&gt; Self {</span><br><span style="color: #333333;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Self::VariantA</span><br><span style="color: #333333;">&nbsp;&nbsp;&nbsp; }</span><br><span style="color: #333333;">}</span><br><span style="color: #333333;">&nbsp;</span><br><span style="color: #333333;">use ExampleEnum::*;</span><br><span style="color: #333333;">&nbsp;</span><br><span style="color: #333333;">// Compiles.</span><br><span style="color: #333333;">let _ = VariantA;</span><br><span style="color: #333333;">&nbsp;</span><br><span style="color: #333333;">// Does not compile !</span><br><span style="color: #333333;">let n = new();</span><br></pre></div>
+
+<p>For more information on <code class="highlight"><span style="color: #333333;">use</span></code> and paths in general, see the <a href="https://doc.rust-lang.org/nightly/reference/items/use-declarations.html">Reference</a>.</p>
+<p>The differences about paths and the <code class="highlight"><span style="color: #333333;">use</span></code> keyword between the 2015 and 2018 editions
+can also be found in the <a href="https://doc.rust-lang.org/nightly/reference/items/use-declarations.html">Reference</a>.</p><div class="actions">Quick Fix: <a href='code-actions:rust-analyzer'>remove&nbsp;the&nbsp;whole&nbsp;`use`&nbsp;item</a> <span class="color-muted">rust-analyzer</span></div><div class="actions"><a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;point&quot;:32},&quot;command&quot;:&quot;lsp_symbol_definition&quot;,&quot;view_id&quot;:583}'>Definition</a> <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;side_by_side&quot;:true,&quot;point&quot;:32},&quot;command&quot;:&quot;lsp_symbol_definition&quot;,&quot;view_id&quot;:583}' class='icon'>◨</a> | <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;point&quot;:32},&quot;command&quot;:&quot;lsp_symbol_type_definition&quot;,&quot;view_id&quot;:583}'>Type&nbsp;Definition</a> <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;side_by_side&quot;:true,&quot;point&quot;:32},&quot;command&quot;:&quot;lsp_symbol_type_definition&quot;,&quot;view_id&quot;:583}' class='icon'>◨</a> | <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;point&quot;:32},&quot;command&quot;:&quot;lsp_symbol_declaration&quot;,&quot;view_id&quot;:583}'>Declaration</a> <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;side_by_side&quot;:true,&quot;point&quot;:32},&quot;command&quot;:&quot;lsp_symbol_declaration&quot;,&quot;view_id&quot;:583}' class='icon'>◨</a> | <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;point&quot;:32},&quot;command&quot;:&quot;lsp_symbol_implementation&quot;,&quot;view_id&quot;:583}'>Implementation</a> <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;side_by_side&quot;:true,&quot;point&quot;:32},&quot;command&quot;:&quot;lsp_symbol_implementation&quot;,&quot;view_id&quot;:583}' class='icon'>◨</a> | <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;point&quot;:32},&quot;command&quot;:&quot;lsp_symbol_references&quot;,&quot;view_id&quot;:583}'>References</a> | <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;point&quot;:32},&quot;command&quot;:&quot;lsp_symbol_rename&quot;,&quot;view_id&quot;:583}'>Rename</a></div><div class="lsp_popup--spacer"></div>
+mdpopups: =====CSS=====
+mdpopups: 
+html {
+  --mdpopups-fg: var(--foreground);
+  --mdpopups-link: var(--bluish);
+  --mdpopups-font-mono: "sf mono", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  --mdpopups-admon-fg: var(--foreground);
+  --mdpopups-admon-info-fg: var(--foreground);
+  --mdpopups-admon-error-fg: var(--foreground);
+  --mdpopups-admon-warning-fg: var(--foreground);
+  --mdpopups-admon-success-fg: var(--foreground);
+  --mdpopups-admon-bg: var(--background);
+  --mdpopups-admon-info-bg: var(--background);
+  --mdpopups-admon-error-bg: var(--background);
+  --mdpopups-admon-warning-bg: var(--background);
+  --mdpopups-admon-success-bg: var(--background);
+  --mdpopups-admon-accent: color(var(--background) blend(var(--foreground) 50%));
+  --mdpopups-admon-title-fg:  var(--foreground);
+  --mdpopups-admon-info-title-fg:  var(--foreground);
+  --mdpopups-admon-error-title-fg:  var(--foreground);
+  --mdpopups-admon-warning-title-fg:  var(--foreground);
+  --mdpopups-admon-success-title-fg:  var(--foreground);
+  --mdpopups-admon-info-accent: color(var(--background) blend(var(--bluish) 50%));
+  --mdpopups-admon-error-accent: color(var(--background) blend(var(--redish) 50%));
+  --mdpopups-admon-warning-accent: color(var(--background) blend(var(--orangish) 50%));
+  --mdpopups-admon-success-accent: color(var(--background) blend(var(--greenish) 50%));
+  --mdpopups-kbd-fg: var(--background);
+  --mdpopups-kbd-bg: var(--foreground);
+}
+html.light {
+  --mdpopups-bg: color(var(--background) blend(black 95%));
+  --mdpopups-hr: color(var(--background) blend(black 85%));
+  --mdpopups-kbd-border: color(var(--foreground) blend(white 80%));
+  --mdpopups-hl-border: color(var(--background) blend(black 90%));
+  --mdpopups-hl-bg: color(var(--background) blend(black 98%));
+  background-color: var(--mdpopups-bg);
+}
+html.dark {
+  --mdpopups-bg: color(var(--background) blend(white 95%));
+  --mdpopups-hr: color(var(--background) blend(white 85%));
+  --mdpopups-kbd-border: color(var(--foreground) blend(black 80%));
+  --mdpopups-hl-border: color(var(--background) blend(white 90%));
+  --mdpopups-hl-bg: color(var(--background) blend(white 98%));
+  background-color: var(--mdpopups-bg);
+}
+
+html, body { padding: 0; margin: 0; }
+div.mdpopups {
+  display: block;
+  margin: 0;
+  padding: 0;
+  font-size: 1rem;
+  line-height: 1.1rem;
+  color: var(--mdpopups-fg);
+  background-color: var(--mdpopups-bg);
+}
+.mdpopups a {
+  color: var(--mdpopups-link);
+}
+.mdpopups .highlight,
+.mdpopups code,
+.mdpopups var,
+.mdpopups tt {
+  font-family: var(--mdpopups-font-mono);
+}
+.mdpopups div { display: block; }
+
+.mdpopups h1 { font-size: 1.5rem; }
+.mdpopups h2 { font-size: 1.4rem; }
+.mdpopups h3 { font-size: 1.3rem; }
+.mdpopups h4 { font-size: 1.2rem; }
+.mdpopups h5 { font-size: 1.1rem; }
+.mdpopups h6 { font-size: 1rem; }
+.mdpopups h1, .mdpopups h2, .mdpopups h3, .mdpopups h4, .mdpopups h5, .mdpopups h6 {
+  margin-top: 0.2rem;
+  margin-bottom: 0.2rem;
+}
+
+.mdpopups blockquote { display: block; font-style: italic; }
+
+.mdpopups hr {
+  display: block;
+  border-color: var(--mdpopups-hr);
+  border-style: solid;
+  border-width: 0 0 1px 0;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.mdpopups dl { display: block; }
+.mdpopups dt {
+  display: block;
+  font-style: italic;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+.mdpopups dd {
+  display: block;
+  margin-left: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.mdpopups pre { display: block; }
+
+.mdpopups blockquote, .mdpopups ol, .mdpopups ul, .mdpopups dl, .mdpopups p {
+  padding: 0;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  margin-left: 0;
+  margin-right: 0;
+}
+.mdpopups ul, .mdpopups ol { padding-left: 2rem; }
+
+.mdpopups kbd {
+  display: inline;
+  font-size: 0.9rem;
+  padding: 0.05rem 0.25rem;
+  border-radius: 0.25rem;
+  background-color: var(--mdpopups-kbd-bg);
+  color: var(--mdpopups-kbd-fg);
+  border: 1px solid var(--mdpopups-kbd-border);
+}
+
+.mdpopups .admonition {
+  display: block;
+  padding: 0 0.5rem 0.5rem 0.5rem;
+  border-radius: 0.25rem;
+  margin-bottom: 0.5rem;
+  background-color: var(--mdpopups-admon-bg);
+  color: var(--mdpopups-admon-fg);
+  border: 1px solid var(--mdpopups-admon-accent);
+}
+.mdpopups .admonition-title {
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin: 0 -0.5rem 0.5rem -0.5rem;
+  padding: 0.1rem 0.5rem 0.1rem 0.5rem;
+  border-top-left-radius: 0.25rem;
+  border-top-right-radius: 0.25rem;
+  color:  var(--mdpopups-admon-title-fg);
+  background-color: var(--mdpopups-admon-accent);
+}
+
+.mdpopups .admonition.panel-success .admonition-title {
+  color: var(--mdpopups-admon-success-title-fg);
+  background-color: var(--mdpopups-admon-success-accent);
+}
+.mdpopups .admonition.panel-success {
+  color:  var(--mdpopups-admon-success-fg);
+  background-color: var(--mdpopups-admon-success-bg);
+  border-color: var(--mdpopups-admon-success-accent);
+}
+.mdpopups .admonition.panel-warning .admonition-title {
+  color: var(--mdpopups-admon-warning-title-fg);
+  background-color: var(--mdpopups-admon-warning-accent);
+}
+.mdpopups .admonition.panel-warning {
+  color:  var(--mdpopups-admon-warning-fg);
+  background-color: var(--mdpopups-admon-warning-bg);
+  border-color: var(--mdpopups-admon-warning-accent);
+}
+.mdpopups .admonition.panel-error .admonition-title {
+  color: var(--mdpopups-admon-error-title-fg);
+  background-color: var(--mdpopups-admon-error-accent);
+}
+.mdpopups .admonition.panel-error {
+  color:  var(--mdpopups-admon-error-fg);
+  background-color: var(--mdpopups-admon-error-bg);
+  border-color: var(--mdpopups-admon-error-accent);
+}
+.mdpopups .admonition.panel-info .admonition-title {
+  color: var(--mdpopups-admon-info-title-fg);
+  background-color: var(--mdpopups-admon-info-accent);
+}
+.mdpopups .admonition.panel-info {
+  color:  var(--mdpopups-admon-info-fg);
+  background-color: var(--mdpopups-admon-info-bg);
+  border-color: var(--mdpopups-admon-info-accent);
+}
+.mdpopups .highlight {
+  border: 1px solid var(--mdpopups-hl-border);
+  border-radius: 0.25rem;
+  font-size: 0.9rem;
+  background-color: var(--mdpopups-hl-bg);
+}
+.mdpopups div.highlight,
+.mdpopups pre.highlight {
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+.mdpopups code.highlight {
+  padding: 0.05rem 0.25rem;
+}
+
+.lsp_popup {
+    margin: 0.5rem 0.5rem 0 0.5rem;
+    font-family: system;
+}
+.lsp_popup--spacer {
+    margin-top: 0.5rem;
+}
+.lsp_popup hr {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    border-color: color(var(--foreground) alpha(0.10));
+}
+.lsp_popup h1,
+.lsp_popup h2,
+.lsp_popup h3,
+.lsp_popup h4,
+.lsp_popup h5,
+.lsp_popup h6 {
+    font-size: 1rem;
+}
+.highlight {
+    border-width: 0;
+    border-radius: 0;
+}
+.color-muted {
+    color: color(var(--foreground) alpha(0.50));
+}
+.diagnostics {
+    margin-bottom: 0.5rem;
+    font-family: var(--mdpopups-font-mono);
+}
+.errors {
+    border-width: 0;
+    background-color: color(var(--redish) alpha(0.25));
+    color: var(--foreground);
+    padding: 0.5rem;
+}
+.warnings {
+    border-width: 0;
+    background-color: color(var(--yellowish) alpha(0.25));
+    color: var(--foreground);
+    padding: 0.5rem;
+}
+.info {
+    border-width: 0;
+    background-color: color(var(--bluish) alpha(0.25));
+    color: var(--foreground);
+    padding: 0.5rem;
+}
+.hints {
+    border-width: 0;
+    background-color: color(var(--bluish) alpha(0.25));
+    color: var(--foreground);
+    padding: 0.5rem;
+}
+.actions {
+    font-family: system;
+    border-width: 0;
+    background-color: color(var(--foreground) alpha(0.1));
+    color: var(--foreground);
+    padding: 0.5rem;
+}
+.actions a.icon {
+    text-decoration: none;
+}
+.link.with-padding {
+    padding: 0.5rem;
+}
+pre.related_info {
+    border-top: 1px solid color(var(--background) alpha(0.25));
+    margin-top: 0.7rem;
+    padding-top: 0.7rem;
+}
+
+mdpopups: =====HTML OUTPUT=====
+mdpopups: 
+<div class="diagnostics"><pre class="hints">unexpected token <span style="color: color(var(--foreground) alpha(0.6));">rustc</span><pre class="related_info"><a href="location:rust-analyzer@file:///Volumes/devel/Rust/example/src/main.rs#1,17">src/main.rs:2</a>: original diagnostic</pre></pre><pre class="hints">remove the whole `use` item <span style="color: color(var(--foreground) alpha(0.6));">rustc</span><span style="color: #ac7a68;">:</span><span style="color: color(var(--foreground) alpha(0.6));">unused_imports</span><pre class="related_info"><a href="location:rust-analyzer@file:///Volumes/devel/Rust/example/src/main.rs#2,10">src/main.rs:3</a>: original diagnostic</pre></pre></div><div class="highlight"><pre><span style="color: #333333;">use</span><br></pre></div>
+
+<hr />
+<p>Import or rename items from other crates or modules.</p>
+<p>Usually a <code class="highlight"><span style="color: #333333;">use</span></code> keyword is used to shorten the path required to refer to a module item.
+The keyword may appear in modules, blocks and even functions, usually at the top.</p>
+<p>The most basic usage of the keyword is <code class="highlight"><span style="color: #333333;">use path::to::item;</span></code>,
+though a number of convenient shortcuts are supported:</p>
+<ul>
+<li>Simultaneously binding a list of paths with a common prefix,
+  using the glob-like brace syntax <code class="highlight"><span style="color: #333333;">use a::b::{c, d, e::f, g::h::i};</span></code></li>
+<li>Simultaneously binding a list of paths with a common prefix and their common parent module,
+  using the <a href="https://doc.rust-lang.org/nightly/std/keyword.self.html"><code class="highlight"><span style="color: #333333;">self</span></code></a> keyword, such as <code class="highlight"><span style="color: #333333;">use a::b::{self, c, d::e};</span></code></li>
+<li>Rebinding the target name as a new local name, using the syntax <code class="highlight"><span style="color: #333333;">use p::q::r as x;</span></code>.
+  This can also be used with the last two features: <code class="highlight"><span style="color: #333333;">use a::b::{self as ab, c as abc}</span></code>.</li>
+<li>Binding all paths matching a given prefix,
+  using the asterisk wildcard syntax <code class="highlight"><span style="color: #333333;">use a::b::*;</span></code>.</li>
+<li>Nesting groups of the previous features multiple times,
+  such as <code class="highlight"><span style="color: #333333;">use a::b::{self as ab, c, d::{*, e::f}};</span></code></li>
+<li>Reexporting with visibility modifiers such as <code class="highlight"><span style="color: #333333;">pub use a::b;</span></code></li>
+<li>Importing with <code class="highlight"><span style="color: #333333;">_</span></code> to only import the methods of a trait without binding it to a name
+  (to avoid conflict for example): <code class="highlight"><span style="color: #333333;">use ::std::io::Read as _;</span></code>.</li>
+</ul>
+<p>Using path qualifiers like <a href="https://doc.rust-lang.org/nightly/std/keyword.crate.html"><code class="highlight"><span style="color: #333333;">crate</span></code></a>, <a href="https://doc.rust-lang.org/nightly/std/keyword.super.html"><code class="highlight"><span style="color: #333333;">super</span></code></a> or <a href="https://doc.rust-lang.org/nightly/std/keyword.self.html"><code class="highlight"><span style="color: #333333;">self</span></code></a> is supported: <code class="highlight"><span style="color: #333333;">use crate::a::b;</span></code>.</p>
+<p>Note that when the wildcard <code class="highlight"><span style="color: #333333;">*</span></code> is used on a type, it does not import its methods (though
+for <code class="highlight"><span style="color: #333333;">enum</span></code>s it imports the variants, as shown in the example below).</p>
+<div class="highlight"><pre><span style="color: #333333;">enum ExampleEnum {</span><br><span style="color: #333333;">&nbsp;&nbsp;&nbsp; VariantA,</span><br><span style="color: #333333;">&nbsp;&nbsp;&nbsp; VariantB,</span><br><span style="color: #333333;">}</span><br><span style="color: #333333;">&nbsp;</span><br><span style="color: #333333;">impl ExampleEnum {</span><br><span style="color: #333333;">&nbsp;&nbsp;&nbsp; fn new() -&gt; Self {</span><br><span style="color: #333333;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Self::VariantA</span><br><span style="color: #333333;">&nbsp;&nbsp;&nbsp; }</span><br><span style="color: #333333;">}</span><br><span style="color: #333333;">&nbsp;</span><br><span style="color: #333333;">use ExampleEnum::*;</span><br><span style="color: #333333;">&nbsp;</span><br><span style="color: #333333;">// Compiles.</span><br><span style="color: #333333;">let _ = VariantA;</span><br><span style="color: #333333;">&nbsp;</span><br><span style="color: #333333;">// Does not compile !</span><br><span style="color: #333333;">let n = new();</span><br></pre></div>
+
+<p>For more information on <code class="highlight"><span style="color: #333333;">use</span></code> and paths in general, see the <a href="https://doc.rust-lang.org/nightly/reference/items/use-declarations.html">Reference</a>.</p>
+<p>The differences about paths and the <code class="highlight"><span style="color: #333333;">use</span></code> keyword between the 2015 and 2018 editions
+can also be found in the <a href="https://doc.rust-lang.org/nightly/reference/items/use-declarations.html">Reference</a>.</p><div class="actions">Quick Fix: <a href='code-actions:rust-analyzer'>remove&nbsp;the&nbsp;whole&nbsp;`use`&nbsp;item</a> <span class="color-muted">rust-analyzer</span></div><div class="actions"><a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;point&quot;:32},&quot;command&quot;:&quot;lsp_symbol_definition&quot;,&quot;view_id&quot;:583}'>Definition</a> <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;side_by_side&quot;:true,&quot;point&quot;:32},&quot;command&quot;:&quot;lsp_symbol_definition&quot;,&quot;view_id&quot;:583}' class='icon'>◨</a> | <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;point&quot;:32},&quot;command&quot;:&quot;lsp_symbol_type_definition&quot;,&quot;view_id&quot;:583}'>Type&nbsp;Definition</a> <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;side_by_side&quot;:true,&quot;point&quot;:32},&quot;command&quot;:&quot;lsp_symbol_type_definition&quot;,&quot;view_id&quot;:583}' class='icon'>◨</a> | <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;point&quot;:32},&quot;command&quot;:&quot;lsp_symbol_declaration&quot;,&quot;view_id&quot;:583}'>Declaration</a> <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;side_by_side&quot;:true,&quot;point&quot;:32},&quot;command&quot;:&quot;lsp_symbol_declaration&quot;,&quot;view_id&quot;:583}' class='icon'>◨</a> | <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;point&quot;:32},&quot;command&quot;:&quot;lsp_symbol_implementation&quot;,&quot;view_id&quot;:583}'>Implementation</a> <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;side_by_side&quot;:true,&quot;point&quot;:32},&quot;command&quot;:&quot;lsp_symbol_implementation&quot;,&quot;view_id&quot;:583}' class='icon'>◨</a> | <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;point&quot;:32},&quot;command&quot;:&quot;lsp_symbol_references&quot;,&quot;view_id&quot;:583}'>References</a> | <a href='subl:lsp_run_text_command_helper {&quot;args&quot;:{&quot;point&quot;:32},&quot;command&quot;:&quot;lsp_symbol_rename&quot;,&quot;view_id&quot;:583}'>Rename</a></div><div class="lsp_popup--spacer"></div>
